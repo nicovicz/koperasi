@@ -14,7 +14,7 @@ class m200311_043055_create_transaksi_table extends Migration
     {
         $this->createTable('{{%transaksi}}', [
             'id' => $this->string(64)->primaryKey()->notNull(),
-            'tgl_trx' => $this->primaryKey(),
+            'tgl_trx' => $this->datetime(),
             'jumlah' => $this->primaryKey(),
             'status_trx' => $this->primaryKey(),
             'ref_id' => $this->primaryKey(),

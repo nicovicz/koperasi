@@ -23,58 +23,61 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body class="blur-theme">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-    ?>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
+        
+        
+        
+        <aside class="al-sidebar">
+  <ul class="al-sidebar-list">
+    <li class="al-sidebar-list-item">
+      <a class="al-sidebar-list-link">
+        <i class="ion-android-home"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li class="al-sidebar-list-item with-sub-menu">
+      <a class="al-sidebar-list-link">
+        <i class="ion-android-home"></i>
+        <span>Dashboard</span>
+        <b class="fa fa-angle-down"></b>
+      </a>
+      <ul class="ba-sidebar-sublist-item">
+        <li>Mail</li>
+      </ul>
+    </li>
+  </ul>
+</aside>
+
+<div class="page-top clearfix" scroll-position="scrolled" max-height="50" >
+    <a href="#/dashboard" class="al-logo clearfix"><span>Blur</span>Admin</a> 
+    <a href="#" class="collapse-menu-link ion-navicon"></a>
+    
+    <div class="user-profile clearfix">
+      <div class="al-user-profile dropdown" uib-dropdown="" style="">
+        <a  class="profile-toggle-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+          <img src="./img/app/profile/Nasta.png">
+        </a>
+        <ul class="top-dropdown-menu profile-dropdown dropdown-menu">
+          <li><i class="dropdown-arr"></i></li>
+          <li><a href="#/profile"><i class="fa fa-user"></i>Profile</a></li>
+          <li><a href=""><i class="fa fa-cog"></i>Settings</a></li>
+          <li role="separator" class="divider"></li>
+
+          <li><a href="" class="signout"><i class="fa fa-power-off"></i>Sign out</a></li>
+        </ul>
+      </div>
 </div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
-
+<?php
+$this->registerJs("
+$(document).on('click','.collapse-menu-link',function(){
+   animateCSS('.al-logo','fadeOut');
+});
+");
+?>
 <?php $this->endBody() ?>
 </body>
 </html>
