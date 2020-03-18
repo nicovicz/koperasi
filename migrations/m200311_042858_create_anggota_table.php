@@ -12,8 +12,14 @@ class m200311_042858_create_anggota_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('{{%mst_anggota}}', [
-            'id' => $this->string(64)->primaryKey()->notNull(),
+            'id' => $this->string(64)->notNull(),
             'nip' => $this->string(),
             'nama' => $this->string()->notNull(),
             'jk' => $this->string(),
@@ -31,8 +37,8 @@ class m200311_042858_create_anggota_table extends Migration
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),
             'updated_by' => $this->integer()->notNull(),
-            
-        ]);
+            'PRIMARY KEY(id)'
+        ],$tableOptions);
 
         $this->addForeignKey(
             'fk-anggota-status',

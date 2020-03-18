@@ -12,27 +12,42 @@ class m200311_043139_create_angsuran_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%angsuran}}', [
-            'id' => $this->string(64)->primaryKey()->notNull(),
-            'dt_pinjaman_id' => $this->primaryKey(),
-            'angsuran_pokok' => $this->primaryKey(),
-            'angsuran_bunga' => $this->primaryKey(),
-            'angsuran_ke' => $this->primaryKey(),
-            'tgl_trx' => $this->primaryKey(),
-            'status_trx' => $this->primaryKey(),
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+        $this->createTable('{{%dt_angsuran}}', [
+            'id' => $this->string(64)->notNull(),
+            'dt_pinjaman_id' => $this->string(64)->notNull(),
+            'angsuran_pokok' => $this->decimal(10,2)->notNull(),
+            'angsuran_bunga' => $this->decimal(10,2)->notNull(),
+            'angsuran_ke' => $this->integer()->notNull(),
+            'tgl_trx' => $this->datetime()->notNull(),
+            'status_trx' => $this->string(64)->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),
             'updated_by' => $this->integer()->notNull(),
-        ]);
+            'PRIMARY KEY(id)'
+        ],$tableOptions);
 
         $this->addForeignKey(
-            'fk-post_tag-post_id',
-            'post_tag',
-            'post_id',
-            'post',
+            'fk-angsuran-pinjaman',
+            'dt_angsuran',
+            'dt_pinjaman_id',
+            'dt_pinjaman',
             'id',
-            'CASCADE'
+            'NO ACTION'
+        );
+
+        $this->addForeignKey(
+            'fk-angsuran-trx',
+            'dt_angsuran',
+            'status_trx',
+            'mst_trx',
+            'id',
+            'NO ACTION'
         );
     }
 
@@ -41,6 +56,6 @@ class m200311_043139_create_angsuran_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%angsuran}}');
+        $this->dropTable('{{%dt_angsuran}}');
     }
 }

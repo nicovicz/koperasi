@@ -12,28 +12,54 @@ class m200311_065929_create_simpanan_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%simpanan}}', [
-            'id' => $this->string(64)->primaryKey()->notNull(),
-            'jumlah' => $this->primaryKey(),
-            'tgl_trx' => $this->primaryKey(),
-            'status_trx' => $this->primaryKey(),
-            'mst_jenis_id' => $this->primaryKey(),
-            'mst_anggota_id' => $this->primaryKey(),
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+        $this->createTable('{{%dt_simpanan}}', [
+            'id' => $this->string(64)->notNull(),
+            'jumlah' => $this->decimal(10,2)->notNull(),
+            'tgl_trx' => $this->datetime()->notNull(),
+            'status_trx' => $this->string(64)->notNull(),
+            'mst_jenis_id' => $this->string(64)->notNull(),
+            'mst_anggota_id' => $this->string(64)->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),
             'updated_by' => $this->integer()->notNull(),
-        ]);
+            'PRIMARY KEY (id)'
+        ],$tableOptions);
 
         $this->addForeignKey(
-            'fk-post_tag-post_id',
-            'post_tag',
-            'post_id',
-            'post',
+            'fk-simpanan-anggota',
+            'dt_simpanan',
+            'mst_anggota_id',
+            'mst_anggota',
             'id',
-            'CASCADE'
+            'NO ACTION'
         );
+
+        $this->addForeignKey(
+            'fk-simpanan-jenis',
+            'dt_simpanan',
+            'mst_jenis_id',
+            'mst_jenis',
+            'id',
+            'NO ACTION'
+        );
+
+        $this->addForeignKey(
+            'fk-simpanan-trx',
+            'dt_pinjaman',
+            'status_trx',
+            'mst_trx',
+            'id',
+            'NO ACTION'
+        );
+
+        
     }
 
     /**
@@ -41,6 +67,6 @@ class m200311_065929_create_simpanan_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%simpanan}}');
+        $this->dropTable('{{%dt_simpanan}}');
     }
 }

@@ -2,7 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-
+$log = require __DIR__ . '/log.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -10,6 +10,38 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+    ],
+    'timeZone'=>'Asia/Jakarta',
+    /*'containers'=>[
+        'definitions'=>[
+            'yii\grid\GridView'=>[
+                'layouts'=>'<div class="panel panel-default">
+                    <div class="panel-heading">
+
+                    </div>
+                    <div class="panel-body">
+                        {items}
+                    </div>
+                 </div>'
+            ]
+        ]
+    ],*/
+    'modules'=>[
+        'master'=>[
+            'class'=>'app\modules\master\Module'
+        ],
+        'anggota'=>[
+            'class'=>'app\modules\anggota\Module'
+        ],
+        'simpanan'=>[
+            'class'=>'app\modules\simpanan\Module'
+        ],
+        'pinjaman'=>[
+            'class'=>'app\modules\simpanan\Module'
+        ],
+        'angsuran'=>[
+            'class'=>'app\modules\simpanan\Module'
+        ]
     ],
     'components' => [
         'request' => [
@@ -33,24 +65,19 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
+        'log' => $log,
         'db' => $db,
-        /*
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+        
     ],
     'params' => $params,
 ];
