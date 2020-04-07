@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use thamtech\uuid\helpers\UuidHelper;
 /**
  * This is the model class for table "{{%mst_anggota}}".
  *
@@ -33,6 +33,7 @@ use Yii;
  */
 class MstAnggota extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */
@@ -47,7 +48,8 @@ class MstAnggota extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'nama', 'mst_status_id', 'mst_unit_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['id'],'default','value'=>UuidHelper::uuid()],
+            [['nama', 'mst_status_id', 'mst_unit_id'], 'required'],
             [['alamat'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],

@@ -1,7 +1,6 @@
 <?php
 
 use yii\db\Migration;
-use thamtech\uuid\helpers\UuidHelper;
 /**
  * Handles the creation of table `{{%trx}}`.
  */
@@ -19,17 +18,15 @@ class m100318_084314_create_trx_table extends Migration
         }
 
           $this->createTable('{{%mst_trx}}', [
-            'id' => $this->string(64)->notNull(),
+            'id' => $this->primaryKey()->unsigned(),
             'nama' => $this->string()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),
             'updated_by' => $this->integer()->notNull(),
-            'PRIMARY KEY(id)'
         ],$tableOptions);
 
         $this->insert('{{%mst_trx}}',[
-            'id'=>UuidHelper::uuid(),
             'nama'=>'init',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_at'=>date('Y-m-d H:i:s'),
@@ -38,7 +35,6 @@ class m100318_084314_create_trx_table extends Migration
         ]);
 
         $this->insert('{{%mst_trx}}',[
-            'id'=>UuidHelper::uuid(),
             'nama'=>'commit',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_at'=>date('Y-m-d H:i:s'),
@@ -47,7 +43,6 @@ class m100318_084314_create_trx_table extends Migration
         ]);
 
         $this->insert('{{%mst_trx}}',[
-            'id'=>UuidHelper::uuid(),
             'nama'=>'rollback',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_at'=>date('Y-m-d H:i:s'),

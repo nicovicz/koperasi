@@ -23,7 +23,7 @@ class m200311_043055_create_transaksi_table extends Migration
             'id' => $this->string(64)->notNull(),
             'tgl_trx' => $this->datetime(),
             'jumlah' => $this->decimal(10,2)->notNull(),
-            'status_trx' => $this->string(64)->notNull(),
+            'status_trx' => $this->integer()->unsigned()->notNull(),
             'ref_id' => $this->string(64)->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),

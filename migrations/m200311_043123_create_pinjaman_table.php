@@ -24,7 +24,8 @@ class m200311_043123_create_pinjaman_table extends Migration
             'jumlah' => $this->decimal(10,2)->notNull(),
             'bunga' => $this->decimal(10,2)->notNull(),
             'tenor' => $this->integer()->notNull(),
-            'status_trx' => $this->string(64)->notNull(),
+            'status_trx' => $this->integer()->unsigned()->notNull(),
+            'status_pinjaman' => $this->integer()->unsigned()->notNull(),
             'mst_anggota_id' =>$this->string(64)->notNull(),
             'mst_jenis_id' => $this->string(64)->notNull(),
             'created_at' => $this->datetime()->notNull(),
@@ -57,6 +58,15 @@ class m200311_043123_create_pinjaman_table extends Migration
             'dt_pinjaman',
             'status_trx',
             'mst_trx',
+            'id',
+            'NO ACTION'
+        );
+
+        $this->addForeignKey(
+            'fk-pinjaman-status',
+            'dt_pinjaman',
+            'status_pinjaman',
+            'mst_status',
             'id',
             'NO ACTION'
         );

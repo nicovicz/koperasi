@@ -10,7 +10,7 @@ use Yii;
  * @property string $id
  * @property float $jumlah
  * @property string $tgl_trx
- * @property string $status_trx
+ * @property int $status_trx
  * @property string $mst_jenis_id
  * @property string $mst_anggota_id
  * @property string $created_at
@@ -37,11 +37,12 @@ class DtSimpanan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['id'],'default','value'=>UuidHelper::uuid()],
             [['id', 'jumlah', 'tgl_trx', 'status_trx', 'mst_jenis_id', 'mst_anggota_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
             [['jumlah'], 'number'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by'], 'integer'],
-            [['id', 'status_trx', 'mst_jenis_id', 'mst_anggota_id'], 'string', 'max' => 64],
+            [['status_trx', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'mst_jenis_id', 'mst_anggota_id'], 'string', 'max' => 64],
             [['id'], 'unique'],
             [['mst_anggota_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstAnggota::className(), 'targetAttribute' => ['mst_anggota_id' => 'id']],
             [['mst_jenis_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstJenis::className(), 'targetAttribute' => ['mst_jenis_id' => 'id']],

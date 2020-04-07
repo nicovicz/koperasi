@@ -18,6 +18,7 @@ use Yii;
  */
 class MstUnit extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */
@@ -32,6 +33,7 @@ class MstUnit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['id'],'default','value'=>UuidHelper::uuid()],
             [['id', 'nama', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],

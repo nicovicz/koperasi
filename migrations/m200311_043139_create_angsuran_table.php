@@ -24,7 +24,7 @@ class m200311_043139_create_angsuran_table extends Migration
             'angsuran_bunga' => $this->decimal(10,2)->notNull(),
             'angsuran_ke' => $this->integer()->notNull(),
             'tgl_trx' => $this->datetime()->notNull(),
-            'status_trx' => $this->string(64)->notNull(),
+            'status_trx' => $this->integer()->unsigned()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),

@@ -19,6 +19,7 @@ use Yii;
  */
 class MstJenis extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */

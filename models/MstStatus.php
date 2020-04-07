@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "{{%mst_status}}".
  *
- * @property string $id
+ * @property int $id
  * @property string $nama
  * @property string $created_at
  * @property int $created_by
@@ -18,6 +18,7 @@ use Yii;
  */
 class MstStatus extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */
@@ -32,12 +33,10 @@ class MstStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'nama', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['nama', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],
-            [['id'], 'string', 'max' => 64],
             [['nama'], 'string', 'max' => 255],
-            [['id'], 'unique'],
         ];
     }
 

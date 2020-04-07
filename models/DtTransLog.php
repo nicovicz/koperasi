@@ -17,6 +17,7 @@ use Yii;
  */
 class DtTransLog extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */

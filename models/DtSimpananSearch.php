@@ -17,9 +17,9 @@ class DtSimpananSearch extends DtSimpanan
     public function rules()
     {
         return [
-            [['id', 'tgl_trx', 'status_trx', 'mst_jenis_id', 'mst_anggota_id', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'tgl_trx', 'mst_jenis_id', 'mst_anggota_id', 'created_at', 'updated_at'], 'safe'],
             [['jumlah'], 'number'],
-            [['created_by', 'updated_by'], 'integer'],
+            [['status_trx', 'created_by', 'updated_by'], 'integer'],
         ];
     }
 
@@ -61,6 +61,7 @@ class DtSimpananSearch extends DtSimpanan
         $query->andFilterWhere([
             'jumlah' => $this->jumlah,
             'tgl_trx' => $this->tgl_trx,
+            'status_trx' => $this->status_trx,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
@@ -68,7 +69,6 @@ class DtSimpananSearch extends DtSimpanan
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'status_trx', $this->status_trx])
             ->andFilterWhere(['like', 'mst_jenis_id', $this->mst_jenis_id])
             ->andFilterWhere(['like', 'mst_anggota_id', $this->mst_anggota_id]);
 

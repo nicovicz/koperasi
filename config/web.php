@@ -5,27 +5,48 @@ $db = require __DIR__ . '/db.php';
 $log = require __DIR__ . '/log.php';
 $config = [
     'id' => 'basic',
+    'name'=>'Koperasi Hubla',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language'=>'id',
     'timeZone'=>'Asia/Jakarta',
-    /*'containers'=>[
+    'as access' => [
+        'class' => '\hscstudio\mimin\components\AccessControl',
+        'allowActions' => [
+           '*'
+       ],
+    ],
+    'container'=>[
         'definitions'=>[
+            'yii\grid\SerialColumn'=>[
+                'header'=>'No.',
+                'contentOptions'=>['class'=>'text-center']
+            ],
+            'yii\grid\ActionColumn'=>[
+                'header'=>'Aksi',
+                'headerOptions'=>['class'=>'text-center'],
+                'contentOptions'=>['class'=>'text-center']
+            ],
+            'yii\data\Pagination'=>[
+                'pageSize'=>10
+            ],
             'yii\grid\GridView'=>[
-                'layouts'=>'<div class="panel panel-default">
-                    <div class="panel-heading">
+                'layout'=>"<div class='panel panel-blur light-text with-scroll animated zoomIn'>
+                    <div class='panel-body'>
+                      {items}
+                      <div class='pull-right'>{pager}</div>
+                      <div class='clearfix'></div>
+                    </div>
+                 </div>"
+            ],
+           
 
-                    </div>
-                    <div class="panel-body">
-                        {items}
-                    </div>
-                 </div>'
-            ]
         ]
-    ],*/
+    ],
     'modules'=>[
         'master'=>[
             'class'=>'app\modules\master\Module'
@@ -41,9 +62,19 @@ $config = [
         ],
         'angsuran'=>[
             'class'=>'app\modules\simpanan\Module'
-        ]
+        ],
+        'utilitas' => [
+            'class' => 'app\modules\utilitas\Module',
+        ],
     ],
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'php:d F Y',
+            'datetimeFormat' => 'php:d F Y H:i',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => '.',
+            'currencyCode' => 'IDR',
+       ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'No5H03Mz9hWC4dhimjVRbclvpCJF0MUD',

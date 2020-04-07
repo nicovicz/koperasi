@@ -31,7 +31,7 @@ class m200311_042858_create_anggota_table extends Migration
             'telp'=> $this->string(),
             'email'=> $this->string(),
             'alamat'=> $this->text(),
-            'mst_status_id'=>$this->string(64)->notNull(),
+            'mst_status_id'=>$this->integer()->unsigned()->notNull(),
             'mst_unit_id' => $this->string(64)->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),

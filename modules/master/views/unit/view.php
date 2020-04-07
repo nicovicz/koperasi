@@ -13,18 +13,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mst-unit-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php Panel::begin([
+    'icon'=>'user',
+    'title'=>'Detil User'
+]);?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+
+<?=$this->render('@app/widgets/view-button',[
+    'id'=>$model->id,
+    'confirm'=>'Apakah Anda Yakin Akan Menghapus User Ini?'
+]);?>
 
     <?= DetailView::widget([
         'model' => $model,

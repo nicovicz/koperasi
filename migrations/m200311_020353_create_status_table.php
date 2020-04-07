@@ -1,7 +1,6 @@
 <?php
 
 use yii\db\Migration;
-use thamtech\uuid\helpers\UuidHelper;
 /**
  * Handles the creation of table `{{%status}}`.
  */
@@ -19,17 +18,16 @@ class m200311_020353_create_status_table extends Migration
         }
 
         $this->createTable('{{%mst_status}}', [
-            'id' => $this->string(64)->notNull(),
+            'id' => $this->primaryKey()->unsigned(),
             'nama' => $this->string()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),
             'updated_by' => $this->integer()->notNull(),
-            'PRIMARY KEY(id)'
+           
         ],$tableOptions);
 
         $this->insert('{{%mst_status}}',[
-            'id'=>UuidHelper::uuid(),
             'nama'=>'Aktif',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_at'=>date('Y-m-d H:i:s'),
@@ -38,7 +36,6 @@ class m200311_020353_create_status_table extends Migration
         ]);
 
         $this->insert('{{%mst_status}}',[
-            'id'=>UuidHelper::uuid(),
             'nama'=>'Non Aktif',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_at'=>date('Y-m-d H:i:s'),

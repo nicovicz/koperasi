@@ -17,9 +17,9 @@ class DtAngsuranSearch extends DtAngsuran
     public function rules()
     {
         return [
-            [['id', 'dt_pinjaman_id', 'tgl_trx', 'status_trx', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'dt_pinjaman_id', 'tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['angsuran_pokok', 'angsuran_bunga'], 'number'],
-            [['angsuran_ke', 'created_by', 'updated_by'], 'integer'],
+            [['angsuran_ke', 'status_trx', 'created_by', 'updated_by'], 'integer'],
         ];
     }
 
@@ -63,6 +63,7 @@ class DtAngsuranSearch extends DtAngsuran
             'angsuran_bunga' => $this->angsuran_bunga,
             'angsuran_ke' => $this->angsuran_ke,
             'tgl_trx' => $this->tgl_trx,
+            'status_trx' => $this->status_trx,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
@@ -70,8 +71,7 @@ class DtAngsuranSearch extends DtAngsuran
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'dt_pinjaman_id', $this->dt_pinjaman_id])
-            ->andFilterWhere(['like', 'status_trx', $this->status_trx]);
+            ->andFilterWhere(['like', 'dt_pinjaman_id', $this->dt_pinjaman_id]);
 
         return $dataProvider;
     }

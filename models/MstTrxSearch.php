@@ -17,8 +17,8 @@ class MstTrxSearch extends MstTrx
     public function rules()
     {
         return [
-            [['id', 'nama', 'created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by'], 'integer'],
+            [['id', 'created_by', 'updated_by'], 'integer'],
+            [['nama', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -58,14 +58,14 @@ class MstTrxSearch extends MstTrx
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'id' => $this->id,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'nama', $this->nama]);
+        $query->andFilterWhere(['like', 'nama', $this->nama]);
 
         return $dataProvider;
     }

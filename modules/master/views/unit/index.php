@@ -12,17 +12,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mst-unit-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Mst Unit'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+   
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'caption'=>'<h3><i class="fa fa-folder"></i> Manajemen Unit</h3>',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

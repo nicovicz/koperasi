@@ -10,7 +10,7 @@ use Yii;
  * @property string $id
  * @property string|null $tgl_trx
  * @property float $jumlah
- * @property string $status_trx
+ * @property int $status_trx
  * @property string $ref_id
  * @property string $created_at
  * @property int $created_by
@@ -33,11 +33,12 @@ class DtTransaksi extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['id'],'default','value'=>UuidHelper::uuid()],
             [['id', 'jumlah', 'status_trx', 'ref_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['jumlah'], 'number'],
-            [['created_by', 'updated_by'], 'integer'],
-            [['id', 'status_trx', 'ref_id'], 'string', 'max' => 64],
+            [['status_trx', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'ref_id'], 'string', 'max' => 64],
         ];
     }
 

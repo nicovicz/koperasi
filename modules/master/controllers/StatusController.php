@@ -46,7 +46,7 @@ class StatusController extends Controller
 
     /**
      * Displays a single MstStatus model.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -78,7 +78,7 @@ class StatusController extends Controller
     /**
      * Updates an existing MstStatus model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -98,7 +98,7 @@ class StatusController extends Controller
     /**
      * Deletes an existing MstStatus model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -112,7 +112,7 @@ class StatusController extends Controller
     /**
      * Finds the MstStatus model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
+     * @param integer $id
      * @return MstStatus the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

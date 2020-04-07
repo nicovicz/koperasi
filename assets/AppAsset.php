@@ -20,17 +20,20 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
-        'css/main.css',
-        'css/animate.css',
-       // 'css/style.css',
-       // 'css/auth.css',
-        'css/font-awesome.css',
-        'css/ionicons.css',
-        'https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900&subset=latin,greek,greek-ext,vietnamese,cyrillic-ext,latin-ext,cyrillic'
+      
+        'css/vendor-2cae343ef1.css',
+        'css/app-b6796b3788.css',
+        'css/site.css'
+       
+       
     ];
     public $js = [
-        'js/utils.js'
+        'js/bootstrap-select.js',
+        'js/dropdown.js',
+        'js/jquery.easing.js',
+        'js/jquery.slimscroll.js',
+        'js/jstree.js',
+        'js/animate.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

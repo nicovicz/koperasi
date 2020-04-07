@@ -17,9 +17,9 @@ class DtPinjamanSearch extends DtPinjaman
     public function rules()
     {
         return [
-            [['id', 'tgl_trx', 'status_trx', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'tgl_trx', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'updated_at'], 'safe'],
             [['jumlah', 'bunga'], 'number'],
-            [['tenor', 'created_by', 'updated_by'], 'integer'],
+            [['tenor', 'status_trx', 'created_by', 'updated_by'], 'integer'],
         ];
     }
 
@@ -63,6 +63,7 @@ class DtPinjamanSearch extends DtPinjaman
             'jumlah' => $this->jumlah,
             'bunga' => $this->bunga,
             'tenor' => $this->tenor,
+            'status_trx' => $this->status_trx,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
@@ -70,7 +71,6 @@ class DtPinjamanSearch extends DtPinjaman
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'status_trx', $this->status_trx])
             ->andFilterWhere(['like', 'mst_anggota_id', $this->mst_anggota_id])
             ->andFilterWhere(['like', 'mst_jenis_id', $this->mst_jenis_id]);
 
