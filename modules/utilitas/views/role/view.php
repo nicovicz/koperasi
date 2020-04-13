@@ -8,15 +8,15 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model hscstudio\mimin\models\AuthItem */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Roles', 'url' => ['index']];
+$this->title = 'Detil Hak Akses: '.$model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Hak Akses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="auth-item-view">
 
 
 <?php Panel::begin([
-    'icon'=>'tags',
+    'icon'=>'info-circle',
     'title'=>'Detil Hak Akses'
 ]);?>
 

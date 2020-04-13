@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\DtPinjaman;
+use app\models\MstMenu;
 
 /**
- * DtPinjamanSearch represents the model behind the search form of `app\models\DtPinjaman`.
+ * MstMenuSearch represents the model behind the search form of `app\models\MstMenu`.
  */
-class DtPinjamanSearch extends DtPinjaman
+class MstMenuSearch extends MstMenu
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class DtPinjamanSearch extends DtPinjaman
     public function rules()
     {
         return [
-            [['id', 'tgl_trx', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'updated_at'], 'safe'],
-            [['jumlah', 'bunga'], 'number'],
-            [['tenor', 'status_trx', 'status_pinjaman', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'order', 'created_by', 'updated_by'], 'integer'],
+            [['name', 'parent', 'icon', 'route', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class DtPinjamanSearch extends DtPinjaman
      */
     public function search($params)
     {
-        $query = DtPinjaman::find();
+        $query = MstMenu::find();
 
         // add conditions that should always apply here
 
@@ -59,21 +58,18 @@ class DtPinjamanSearch extends DtPinjaman
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'tgl_trx' => $this->tgl_trx,
-            'jumlah' => $this->jumlah,
-            'bunga' => $this->bunga,
-            'tenor' => $this->tenor,
-            'status_trx' => $this->status_trx,
-            'status_pinjaman' => $this->status_pinjaman,
+            'id' => $this->id,
+            'order' => $this->order,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'mst_anggota_id', $this->mst_anggota_id])
-            ->andFilterWhere(['like', 'mst_jenis_id', $this->mst_jenis_id]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'parent', $this->parent])
+            ->andFilterWhere(['like', 'icon', $this->icon])
+            ->andFilterWhere(['like', 'route', $this->route]);
 
         return $dataProvider;
     }

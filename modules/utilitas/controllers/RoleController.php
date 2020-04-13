@@ -7,34 +7,14 @@ use hscstudio\mimin\models\AuthItem;
 use hscstudio\mimin\models\AuthItemSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+
 
 /**
  * AuthItemController implements the CRUD actions for AuthItem model.
  */
 class RoleController extends Controller
 {
-	public function behaviors()
-	{
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'rules' => [
-					[
-						'allow' => true,
-						'roles' => ['@'],
-					],
-				],
-			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['post'],
-				],
-			],
-		];
-	}
+	use \app\helpers\AuthGuardTrait;
 
 	/**
 	 * Lists all AuthItem models.

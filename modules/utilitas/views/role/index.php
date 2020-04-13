@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\administrator\models\AuthItemSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Roles';
+$this->title = 'Manajemen Hak Akses';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="auth-item-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= GridView::widget([
 		'dataProvider' => $dataProvider,
 		'filterModel' => $searchModel,
-		'caption'=>'<h3><i class="fa fa-user-secret"></i> Manajemen Hak Akses</h3>',
+		'caption'=>'<h3><i class="fa fa-folder-open"></i> '.$this->title.'</h3>',
 		'columns' => [
 			['class' => 'yii\grid\SerialColumn'],
 

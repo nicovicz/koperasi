@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\MstUnitSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Mst Units');
+$this->title = Yii::t('app', 'Manajemen Unit');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mst-unit-index">
@@ -19,15 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'caption'=>'<h3><i class="fa fa-folder"></i> Manajemen Unit</h3>',
+        'caption'=>'<h3><i class="fa fa-folder-open"></i> '.$this->title.'</h3>',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           
             'nama',
-            'created_at',
-            'created_by',
-            'updated_at',
+            'created_at:datetime',
+           
+            'updated_at:datetime',
             //'updated_by',
 
             ['class' => 'yii\grid\ActionColumn'],

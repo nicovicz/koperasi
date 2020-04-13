@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\DtPinjamanSearch */
+/* @var $model app\models\MstMenuSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="dt-pinjaman-search">
+<div class="mst-menu-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,21 +17,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'tgl_trx') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'jumlah') ?>
+    <?= $form->field($model, 'parent') ?>
 
-    <?= $form->field($model, 'bunga') ?>
+    <?= $form->field($model, 'order') ?>
 
-    <?= $form->field($model, 'tenor') ?>
+    <?= $form->field($model, 'icon') ?>
 
-    <?php // echo $form->field($model, 'status_trx') ?>
-
-    <?php // echo $form->field($model, 'status_pinjaman') ?>
-
-    <?php // echo $form->field($model, 'mst_anggota_id') ?>
-
-    <?php // echo $form->field($model, 'mst_jenis_id') ?>
+    <?php // echo $form->field($model, 'route') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

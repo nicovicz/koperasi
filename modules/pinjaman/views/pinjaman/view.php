@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'bunga',
             'tenor',
             'status_trx',
+            'status_pinjaman',
             'mst_anggota_id',
             'mst_jenis_id',
             'created_at',

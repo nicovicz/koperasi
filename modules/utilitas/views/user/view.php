@@ -8,21 +8,21 @@ use kartik\widgets\Select2;
 /* @var $this yii\web\View */
 /* @var $model app\modules\administrator\models\User */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->title = 'Detil Akun: '.$model->username;
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Akun', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
 
 <?php Panel::begin([
-    'icon'=>'user',
+    'icon'=>'info-circle',
     'title'=>'Detil User'
 ]);?>
 
 
 <?=$this->render('@app/widgets/view-button',[
     'id'=>$model->id,
-    'confirm'=>'Apakah Anda Yakin Akan Menghapus User Ini?'
+    'confirm'=>'Apakah Anda Yakin Akan Menghapus Akun Ini?'
 ]);?>
 
 

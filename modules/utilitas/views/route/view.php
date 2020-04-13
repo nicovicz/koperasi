@@ -6,21 +6,21 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\modules\administrator\models\Route */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Routes', 'url' => ['index']];
+$this->title = 'Detil Izin: '.$model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Izin', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="route-view">
 
 <?php Panel::begin([
-    'icon'=>'bookmark',
+    'icon'=>'info-circle',
     'title'=>'Detil Permission'
 ]);?>
 
 
 <?=$this->render('@app/widgets/view-button',[
     'id'=>$model->name,
-    'confirm'=>'Apakah Anda Yakin Akan Menghapus Permission Ini?'
+    'confirm'=>'Apakah Anda Yakin Akan Menghapus Izin Ini?'
 ]);?>
 
 

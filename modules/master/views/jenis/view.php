@@ -2,40 +2,39 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\widgets\Panel;
 /* @var $this yii\web\View */
 /* @var $model app\models\MstJenis */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Mst Jenis'), 'url' => ['index']];
+
+$this->title = 'Detil Jenis Simpanan: '.$model->nama;
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Jenis Simpanan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="mst-jenis-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php Panel::begin([
+    'icon'=>'info-circle',
+    'title'=>'Detil Jenis Simpanan'
+]);?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+
+<?=$this->render('@app/widgets/view-button',[
+    'id'=>$model->id,
+    'confirm'=>'Apakah Anda Yakin Akan Menghapus Item Ini?'
+]);?>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+           
             'nama',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
+            'created_at:datetime',
+          
+            'updated_at:datetime',
+           
         ],
     ]) ?>
 
+<?php Panel::end();?>
 </div>

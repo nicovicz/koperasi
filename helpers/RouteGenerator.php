@@ -1,118 +1,18 @@
 <?php
-
-namespace app\modules\utilitas\controllers;
+namespace app\helpers;
 
 use Yii;
 use hscstudio\mimin\models\Route;
 use hscstudio\mimin\models\RouteSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-
-
 use hscstudio\mimin\components\Configs;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 use yii\caching\TagDependency;
-use yii\web\Response;
 
-/**
- * RouteController implements the CRUD actions for Route model.
- */
-class RouteController extends Controller
+class RouteGenerator
 {
-	const CACHE_TAG = 'mdm.admin.route';
 
-	use \app\helpers\AuthGuardTrait;
-
-	/**
-	 * Lists all Route models.
-	 * @return mixed
-	 */
-	public function actionIndex()
-	{
-		$searchModel = new RouteSearch([
-			'status' => 1,
-		]);
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		$dataProvider->getSort()->defaultOrder = [
-			'type' => SORT_ASC,
-		];
-		return $this->render('index', [
-			'searchModel' => $searchModel,
-			'dataProvider' => $dataProvider,
-		]);
-	}
-
-	/**
-	 * Displays a single Route model.
-	 * @param string $id
-	 * @return mixed
-	 */
-	public function actionView($id)
-	{
-		return $this->render('view', [
-			'model' => $this->findModel($id),
-		]);
-	}
-
-	/**
-	 * Creates a new Route model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 * @return mixed
-	 */
-	public function actionCreate()
-	{
-		$model = new Route();
-
-		if ($model->load(Yii::$app->request->post())) {
-			$model->save();
-			return $this->redirect(['view', 'id' => $model->name]);
-		} else {
-			return $this->render('create', [
-				'model' => $model,
-			]);
-		}
-	}
-
-	/**
-	 * Updates an existing Route model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param string $id
-	 * @return mixed
-	 */
-	public function actionUpdate($id)
-	{
-		$model = $this->findModel($id);
-
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->name]);
-		} else {
-			return $this->render('update', [
-				'model' => $model,
-			]);
-		}
-	}
-
-	/**
-	 * Deletes an existing Route model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 * @param string $id
-	 * @return mixed
-	 */
-	public function actionDelete($id)
-	{
-		$this->findModel($id)->delete();
-
-		return $this->redirect(['index']);
-	}
-
-	/**
-	 * Deletes an existing Route model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 * @param string $id
-	 * @return mixed
-	 */
-	public function actionGenerate()
+    public function actionGenerate($role,$authManager)
 	{
 		$routes = $this->searchRoute('all');
 		foreach ($routes as $route => $status) {
@@ -122,37 +22,19 @@ class RouteController extends Controller
 				$pos = (strrpos($route, '/'));
 				$model->type = substr($route, 1, $pos - 1);
 				$model->alias = substr($route, $pos + 1, 64);
-				$model->save();
+                $model->save();
+                if ($model->alias != '*'){
+                    $permission = $authManager->createPermission($model->name);
+                    $authManager->add($permission);
+                    $authManager->addChild($role, $permission);
+                }
+                
 			}
 		}
-		Yii::$app->session->setFlash('success', 'Route success generate');
-		return $this->redirect(['index']);
-	}
-
-	/**
-	 * Finds the Route model based on its primary key value.
-	 * If the model is not found, a 404 HTTP exception will be thrown.
-	 * @param string $id
-	 * @return Route the loaded model
-	 * @throws NotFoundHttpException if the model cannot be found
-	 */
-	protected function findModel($id)
-	{
-		if (($model = Route::findOne($id)) !== null) {
-			return $model;
-		} else {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
-	}
-
-	/**
-	 * Search Route
-	 * @param string $target
-	 * @param string $term
-	 * @param string $refresh
-	 * @return array
-	 */
-	public function searchRoute($target, $term = '', $refresh = '0')
+	
+    }
+    
+    public function searchRoute($target, $term = '', $refresh = '0')
 	{
 		if ($refresh == '1') {
 			$this->invalidate();
@@ -206,8 +88,10 @@ class RouteController extends Controller
 		$key = __METHOD__;
 		$cache = Configs::instance()->cache;
 		if ($cache === null || ($result = $cache->get($key)) === false) {
-			$result = [];
-			$this->getRouteRecrusive(Yii::$app, $result);
+            $result = [];
+            $config = require __DIR__ . '/../config/web.php';
+            $Yiiapp = new \yii\web\Application($config);
+			$this->getRouteRecrusive($Yiiapp, $result);
 			if ($cache !== null) {
 				$cache->set($key, $result, Configs::instance()->cacheDuration, new TagDependency([
 					'tags' => self::CACHE_TAG
@@ -331,28 +215,5 @@ class RouteController extends Controller
 			Yii::error($exc->getMessage(), __METHOD__);
 		}
 		Yii::endProfile($token, __METHOD__);
-	}
-
-	/**
-	 * Ivalidate cache
-	 */
-	protected function invalidate()
-	{
-		if (Configs::instance()->cache !== null) {
-			TagDependency::invalidate(Configs::instance()->cache, self::CACHE_TAG);
-		}
-	}
-
-	/**
-	 * Set default rule of parameterize route.
-	 */
-	protected function setDefaultRule()
-	{
-		if (Yii::$app->authManager->getRule(RouteRule::RULE_NAME) === null) {
-			Yii::$app->authManager->add(Yii::createObject([
-					'class' => RouteRule::className(),
-					'name' => RouteRule::RULE_NAME]
-			));
-		}
 	}
 }

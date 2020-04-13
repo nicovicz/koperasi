@@ -17,6 +17,7 @@ class m200322_073653_seed extends Migration
         $model->username = 'admin';
         $model->email = 'admin@localhost.com';
         $model->setPassword('123456');
+        $model->status = User::STATUS_ACTIVE;
         $model->generateAuthKey();
         $model->created_at = time();
         $model->save();
@@ -25,6 +26,9 @@ class m200322_073653_seed extends Migration
         $role = $auth->createRole('SuperAdmin');
         $auth->add($role);
         $auth->assign($role, $model->id);
+
+        $generator = new \app\helpers\RouteGenerator;
+        $generator->actionGenerate($role,$auth);
     }
 
     /**

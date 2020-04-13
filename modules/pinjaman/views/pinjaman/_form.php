@@ -24,6 +24,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status_trx')->textInput() ?>
 
+    <?= $form->field($model, 'status_pinjaman')->textInput() ?>
+
     <?= $form->field($model, 'mst_anggota_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'mst_jenis_id')->textInput(['maxlength' => true]) ?>

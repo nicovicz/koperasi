@@ -13,6 +13,7 @@ use Yii;
  * @property float $bunga
  * @property int $tenor
  * @property int $status_trx
+ * @property int $status_pinjaman
  * @property string $mst_anggota_id
  * @property string $mst_jenis_id
  * @property string $created_at
@@ -23,6 +24,7 @@ use Yii;
  * @property DtAngsuran[] $dtAngsurans
  * @property MstAnggota $mstAnggota
  * @property MstJenis $mstJenis
+ * @property MstStatus $statusPinjaman
  * @property MstTrx $statusTrx
  * @property MstTrx $statusTrx0
  */
@@ -42,15 +44,15 @@ class DtPinjaman extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'],'default','value'=>UuidHelper::uuid()],
-            [['id', 'tgl_trx', 'jumlah', 'bunga', 'tenor', 'status_trx', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['id', 'tgl_trx', 'jumlah', 'bunga', 'tenor', 'status_trx', 'status_pinjaman', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['jumlah', 'bunga'], 'number'],
-            [['tenor', 'status_trx', 'created_by', 'updated_by'], 'integer'],
+            [['tenor', 'status_trx', 'status_pinjaman', 'created_by', 'updated_by'], 'integer'],
             [['id', 'mst_anggota_id', 'mst_jenis_id'], 'string', 'max' => 64],
             [['id'], 'unique'],
             [['mst_anggota_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstAnggota::className(), 'targetAttribute' => ['mst_anggota_id' => 'id']],
             [['mst_jenis_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstJenis::className(), 'targetAttribute' => ['mst_jenis_id' => 'id']],
+            [['status_pinjaman'], 'exist', 'skipOnError' => true, 'targetClass' => MstStatus::className(), 'targetAttribute' => ['status_pinjaman' => 'id']],
             [['status_trx'], 'exist', 'skipOnError' => true, 'targetClass' => MstTrx::className(), 'targetAttribute' => ['status_trx' => 'id']],
             [['status_trx'], 'exist', 'skipOnError' => true, 'targetClass' => MstTrx::className(), 'targetAttribute' => ['status_trx' => 'id']],
         ];
@@ -68,6 +70,7 @@ class DtPinjaman extends \yii\db\ActiveRecord
             'bunga' => Yii::t('app', 'Bunga'),
             'tenor' => Yii::t('app', 'Tenor'),
             'status_trx' => Yii::t('app', 'Status Trx'),
+            'status_pinjaman' => Yii::t('app', 'Status Pinjaman'),
             'mst_anggota_id' => Yii::t('app', 'Mst Anggota ID'),
             'mst_jenis_id' => Yii::t('app', 'Mst Jenis ID'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -105,6 +108,16 @@ class DtPinjaman extends \yii\db\ActiveRecord
     public function getMstJenis()
     {
         return $this->hasOne(MstJenis::className(), ['id' => 'mst_jenis_id']);
+    }
+
+    /**
+     * Gets query for [[StatusPinjaman]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatusPinjaman()
+    {
+        return $this->hasOne(MstStatus::className(), ['id' => 'status_pinjaman']);
     }
 
     /**

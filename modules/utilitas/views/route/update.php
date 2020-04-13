@@ -5,10 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\modules\administrator\models\Route */
 
-$this->title = 'Update Permission: ' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Routes', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->name]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Ubah Izin: ' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Izin', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['view', 'id' => $model->name]];
 ?>
 <div class="route-update">
 

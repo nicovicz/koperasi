@@ -54,6 +54,12 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionProfile()
+    {
+        $this->layout = '//main';
+        return $this->render('profile');
+    }
+
     /**
      * Login action.
      *

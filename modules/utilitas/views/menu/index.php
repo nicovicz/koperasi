@@ -4,15 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\MstJenisSearch */
+/* @var $searchModel app\models\MstMenuSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Manajemen Jenis Simpanan');
+$this->title = Yii::t('app', 'Manajemen Menu');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="mst-jenis-index">
-
-    
+<div class="mst-menu-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -23,10 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-           
-            'nama',
-            'created_at:datetime',
-            'updated_at:datetime',
+         
+            'name',
+            'parent',
+            'order',
+            'icon',
+            'route',
+            //'created_at',
+            //'created_by',
+            //'updated_at',
             //'updated_by',
 
             ['class' => 'yii\grid\ActionColumn'],

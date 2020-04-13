@@ -2,38 +2,37 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\widgets\Panel;
 /* @var $this yii\web\View */
 /* @var $model app\models\MstUnit */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Mst Units'), 'url' => ['index']];
+$this->title = 'Detil Unit: '.$model->nama;
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Unit', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+
 ?>
 <div class="mst-unit-view">
 
 <?php Panel::begin([
-    'icon'=>'user',
-    'title'=>'Detil User'
+    'icon'=>'info-circle',
+    'title'=>'Detil Unit'
 ]);?>
 
 
 <?=$this->render('@app/widgets/view-button',[
     'id'=>$model->id,
-    'confirm'=>'Apakah Anda Yakin Akan Menghapus User Ini?'
+    'confirm'=>'Apakah Anda Yakin Akan Menghapus Item Ini?'
 ]);?>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+          
             'nama',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
+            'created_at:datetime',
+            'updated_at:datetime',
+          
         ],
     ]) ?>
-
+<?php Panel::end();?>
 </div>

@@ -5,6 +5,7 @@
 
 use app\widgets\Alert;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -33,97 +34,53 @@ AppAsset::register($this);
 <aside class="al-sidebar">
   
   <ul class="al-sidebar-list">
+  <?php 
+  $auth = Yii::$app->authManager;
+  $roles = $auth->getRolesByUser(Yii::$app->user->id);
+  $listRoles = (\yii\helpers\ArrayHelper::getColumn($roles,'name'));
+  $m = \app\models\MstMenu::find()
+  ->innerJoin('auth_item_child','mst_menu.route = auth_item_child.child')
+  ->where(['IN','auth_item_child.parent',$listRoles])->asArray()->all();
+
+  $parent = \app\models\MstMenu::find()
+  ->where(['IN','id',array_unique(\yii\helpers\ArrayHelper::getColumn($m,function($item){
+     $item['parent'] = empty($item['parent'])?$item['id']:$item['parent'];
+    return $item['parent'];
+  }))])->orderBy('order')->asArray()->all();
+  $child = \yii\helpers\ArrayHelper::index($m,null,'parent');
  
-    <li class="al-sidebar-list-item">
-      <a class="al-sidebar-list-link">
-        <i class="ion-android-home"></i>
-        <span>Dashboard</span>
-      </a>
-    </li>
+ 
+  ?>
+  <?php foreach($parent as $p):?>
 
-    <li class="al-sidebar-list-item with-sub-menu ">
-      <a class="al-sidebar-list-link">
-        <i class="ion-android-home"></i>
-        <span>Transaksi</span>
-        <b class="fa fa-angle-down"></b>
-      </a>
-      <ul class="al-sidebar-sublist">
-        <li class="ba-sidebar-sublist-item">
-          <a>Tambah Anggota</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Daftar Anggota</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Tambah Simpanan</a>
-        </li>
+    <?php if (array_key_exists($p['id'],$child)):?>
+      <li class="al-sidebar-list-item with-sub-menu ">
+        <a class="al-sidebar-list-link small" href="<?=$p['route']?>">
+          <i class="<?=$p['icon'];?>"></i>
+          <span><?=$p['name'];?></span>
+          <b class="fa fa-angle-down"></b>
+        </a>
+        <ul class="al-sidebar-sublist">
+          <?php foreach($child[$p['id']] as $c):?>
+            <li class="ba-sidebar-sublist-item">
+              <a href="<?=Url::to([$c['route']]);?>" class="small"><?=$c['name'];?></a>
+            </li>
+          <?php endforeach;?>
+        </ul>
+      </li>
+    <?php else:?>
+      <li class="al-sidebar-list-item">
+        <a class="al-sidebar-list-link">
+          <i class="ion-android-home"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+    <?php endif;?>
 
-        <li class="ba-sidebar-sublist-item">
-          <a>Daftar Simpanan</a>
-        </li>
+  <?php endforeach;?>
+    
 
-        <li class="ba-sidebar-sublist-item">
-          <a>Tambah Pinjaman</a>
-        </li>
-
-        <li class="ba-sidebar-sublist-item">
-          <a>Daftar Pinjaman</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Tambah Angsuran</a>
-        </li>
-
-        <li class="ba-sidebar-sublist-item">
-          <a>Daftar Angsuran</a>
-        </li>
-      </ul>
-    </li>
-
-    <li class="al-sidebar-list-item with-sub-menu ">
-      <a class="al-sidebar-list-link">
-        <i class="ion-android-home"></i>
-        <span>Master</span>
-        <b class="fa fa-angle-down"></b>
-      </a>
-      <ul class="al-sidebar-sublist">
-        <li class="ba-sidebar-sublist-item">
-          <a>Status Transaksi</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Status Anggota</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Jenis Pinjaman</a>
-        </li>
-
-        <li class="ba-sidebar-sublist-item">
-          <a>Unit</a>
-        </li>
-      </ul>
-    </li>
-
-    <li class="al-sidebar-list-item with-sub-menu ">
-      <a class="al-sidebar-list-link">
-        <i class="ion-android-home"></i>
-        <span>Utilitas</span>
-        <b class="fa fa-angle-down"></b>
-      </a>
-      <ul class="al-sidebar-sublist">
-        <li class="ba-sidebar-sublist-item">
-          <a>Role</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Status Anggota</a>
-        </li>
-        <li class="ba-sidebar-sublist-item">
-          <a>Jenis Pinjaman</a>
-        </li>
-
-        <li class="ba-sidebar-sublist-item">
-          <a>Unit</a>
-        </li>
-      </ul>
-    </li>
+   
    
     
   </ul>
@@ -139,8 +96,9 @@ AppAsset::register($this);
 <div class="al-main">
   <div class="al-content">
   <div class="content-top clearfix">
-   
-  <ul class="breadcrumb al-breadcrumb"><li><a href="#/dashboard">Home</a></li><li class="ng-binding">Smart Tables</li></ul>
+  <?php echo Breadcrumbs::widget([
+    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+]);?>
   </div>
   <?=$content;?>
 </div>
@@ -173,7 +131,7 @@ $(document).on('click','.profile-toggle-link',function(e){
 });
 
 $(document).on('click','.al-sidebar-list-item',function(e){
-  e.preventDefault();
+  
   var main = $(this);
   if (main.hasClass('ba-sidebar-item-expanded')){
     main.removeClass('ba-sidebar-item-expanded');

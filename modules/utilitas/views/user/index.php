@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\administrator\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Manajemen Akun';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= GridView::widget([
 		'dataProvider' => $dataProvider,
 		'filterModel' => $searchModel,
-		'caption'=>'<h3><i class="fa fa-users"></i> Manajemen User</h3>',
+		'caption'=>'<h3><i class="fa fa-folder-open"></i> '.$this->title.'</h3>',
 		'columns' => [
 			['class' => 'yii\grid\SerialColumn'],
 

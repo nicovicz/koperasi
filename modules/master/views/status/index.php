@@ -7,30 +7,27 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\MstStatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Mst Statuses');
+$this->title = Yii::t('app', 'Manajemen Status');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mst-status-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Mst Status'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+   
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'caption'=>'<h3><i class="fa fa-folder-open"></i> '.$this->title.'</h3>',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           
             'nama',
-            'created_at',
-            'created_by',
-            'updated_at',
+            'created_at:datetime',
+           
+            'updated_at:datetime',
             //'updated_by',
 
             ['class' => 'yii\grid\ActionColumn'],
