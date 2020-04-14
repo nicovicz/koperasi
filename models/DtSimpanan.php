@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
-
+use app\helpers\Ref;
 /**
  * This is the model class for table "{{%dt_simpanan}}".
  *
@@ -32,6 +32,12 @@ class DtSimpanan extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%dt_simpanan}}';
+    }
+
+    public function init()
+    {
+        $this->tgl_trx = date('Y-m-d');
+        return parent::init();
     }
 
     /**

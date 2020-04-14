@@ -23,6 +23,11 @@ $config = [
     ],
     'container'=>[
         'definitions'=>[
+            'yii\widgets\Breadcrumbs'=>[
+                'options'=>[
+                    'class'=>'breadcrumb al-breadcrumb'
+                ]
+            ],
             'yii\grid\SerialColumn'=>[
                 'header'=>'No.',
                 'contentOptions'=>['class'=>'text-center']

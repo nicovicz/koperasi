@@ -3,10 +3,11 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use app\models\MstAnggota;
 
 class ApiController extends Controller
 {
-    use \app\helpers\AuthGuardTrait;
+    //use \app\helpers\AuthGuardTrait;
 
     public function actionPegawai()
     {
@@ -32,5 +33,22 @@ class ApiController extends Controller
        
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $req['return'][0];
+    }
+
+    public function actionAnggota($q = null, $id = null)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+
+        $model = MstAnggota::find()
+            ->select(['id','nama text'])
+            
+            ->limit(10)
+            ->asArray()
+            ->all();
+
+        $out['results'] = array_values($model);
+
+        return $out;
     }
 }
