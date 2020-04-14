@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "{{%mst_anggota}}".
  *
@@ -34,6 +35,9 @@ use thamtech\uuid\helpers\UuidHelper;
 class MstAnggota extends \yii\db\ActiveRecord
 {
     use \app\helpers\AuditTrait;
+
+    public $fotoTemp;
+    public $jumlah;
     /**
      * {@inheritdoc}
      */
@@ -42,19 +46,30 @@ class MstAnggota extends \yii\db\ActiveRecord
         return '{{%mst_anggota}}';
     }
 
+    
+
+    public function getUploadDir()
+    {
+        return Yii::getAlias('@uploadAnggota').'/'.$this->nip.'/';
+    }
+    
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [['fotoTemp'],'safe'],
+            [['jumlah'],'number'],
             [['id'],'default','value'=>UuidHelper::uuid()],
             [['nama', 'mst_status_id', 'mst_unit_id'], 'required'],
             [['alamat'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],
             [['id', 'mst_status_id', 'mst_unit_id'], 'string', 'max' => 64],
-            [['nip', 'nama', 'jk', 'jabatan', 'golongan', 'bagian', 'sub_bagian', 'foto', 'telp', 'email'], 'string', 'max' => 255],
+            [['foto'],'file','extensions'=>['jpg','jpeg','png']],
+            [['nip', 'nama', 'jk', 'jabatan', 'golongan', 'bagian', 'sub_bagian',  'telp', 'email'], 'string', 'max' => 255],
             [['id'], 'unique'],
             [['mst_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstStatus::className(), 'targetAttribute' => ['mst_status_id' => 'id']],
             [['mst_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstUnit::className(), 'targetAttribute' => ['mst_unit_id' => 'id']],

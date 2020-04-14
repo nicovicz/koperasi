@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use thamtech\uuid\helpers\UuidHelper;
 
 /**
  * This is the model class for table "{{%dt_transaksi}}".
@@ -12,6 +13,7 @@ use Yii;
  * @property float $jumlah
  * @property int $status_trx
  * @property string $ref_id
+ * @property string $tipe
  * @property string $created_at
  * @property int $created_by
  * @property string $updated_at
@@ -19,6 +21,10 @@ use Yii;
  */
 class DtTransaksi extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
+    use \app\helpers\AuditLogTrait;
+    
+    public $instance;
     /**
      * {@inheritdoc}
      */
@@ -34,11 +40,12 @@ class DtTransaksi extends \yii\db\ActiveRecord
     {
         return [
             [['id'],'default','value'=>UuidHelper::uuid()],
-            [['id', 'jumlah', 'status_trx', 'ref_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['jumlah', 'status_trx', 'ref_id', 'tipe'], 'required'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['jumlah'], 'number'],
             [['status_trx', 'created_by', 'updated_by'], 'integer'],
             [['id', 'ref_id'], 'string', 'max' => 64],
+            [['tipe'], 'string', 'max' => 1],
         ];
     }
 
@@ -53,10 +60,13 @@ class DtTransaksi extends \yii\db\ActiveRecord
             'jumlah' => Yii::t('app', 'Jumlah'),
             'status_trx' => Yii::t('app', 'Status Trx'),
             'ref_id' => Yii::t('app', 'Ref ID'),
+            'tipe' => Yii::t('app', 'Tipe'),
             'created_at' => Yii::t('app', 'Created At'),
             'created_by' => Yii::t('app', 'Created By'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'updated_by' => Yii::t('app', 'Updated By'),
         ];
     }
+
+   
 }

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use thamtech\uuid\helpers\UuidHelper;
 
 /**
  * This is the model class for table "{{%dt_simpanan}}".
@@ -23,6 +24,8 @@ use Yii;
  */
 class DtSimpanan extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
+    
     /**
      * {@inheritdoc}
      */
@@ -38,7 +41,7 @@ class DtSimpanan extends \yii\db\ActiveRecord
     {
         return [
             [['id'],'default','value'=>UuidHelper::uuid()],
-            [['id', 'jumlah', 'tgl_trx', 'status_trx', 'mst_jenis_id', 'mst_anggota_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['jumlah', 'tgl_trx', 'status_trx', 'mst_jenis_id', 'mst_anggota_id'], 'required'],
             [['jumlah'], 'number'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['status_trx', 'created_by', 'updated_by'], 'integer'],
@@ -87,4 +90,6 @@ class DtSimpanan extends \yii\db\ActiveRecord
     {
         return $this->hasOne(MstJenis::className(), ['id' => 'mst_jenis_id']);
     }
+
+    
 }

@@ -8,7 +8,13 @@ use app\models\MstAnggotaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use thamtech\uuid\helpers\UuidHelper;
+use app\helpers\Ref;
+use yii\db\Exception;
+use app\models\DtSimpanan;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
+use app\models\DtTransaksi;
 /**
  * AnggotaController implements the CRUD actions for MstAnggota model.
  */
@@ -65,9 +71,76 @@ class AnggotaController extends Controller
     public function actionCreate()
     {
         $model = new MstAnggota();
+        $model->mst_status_id = Ref::getActiveStatus();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+
+                // handling upload photo anggota
+                $photoName = UuidHelper::uuid().'.';
+                if (!is_dir($model->getUploadDir())){
+                    FileHelper::createDirectory($model->getUploadDir());
+                }
+
+                if (!empty($model->fotoTemp)){
+                    $getPartSchemas = explode('/',$model->fotoTemp);
+                    $lastSchema = explode('.',end($getPartSchemas));
+                    $getExtension = end($lastSchema);
+                    
+                    file_put_content($model->getUploadDir().$photoName,file_get_contents($model->fotoTemp));
+                    $model->foto = $photoName;
+                }else{
+                    $model->foto = UploadedFile::getInstance($model,'foto');
+
+                    if ($model->foto){
+                        
+                        if ($model->foto->saveAs($model->getUploadDir().$photoName)){
+                            $model->foto = $photoName;
+                        }
+                    }
+                } 
+
+                if (!$model->save()){
+                    throw new Exception('Data Anggota Koperasi Gagal Disimpan');
+                    
+                }
+                
+                // handling insert ke tabel simpanan
+                $simpanan = new DtSimpanan();
+                $simpanan->mst_anggota_id = $model->id;
+                $simpanan->mst_jenis_id = Ref::getSimpananPokok();
+                $simpanan->status_trx = Ref::getCommit();
+                $simpanan->jumlah = $model->jumlah;
+                $simpanan->tgl_trx = Ref::now();
+                if (!$simpanan->save()){
+                    
+                    throw new Exception('Data Simpanan Gagal Disimpan');
+                    
+                }
+
+
+                // handling insert ke tabel transaksi
+                $trx = new DtTransaksi();
+                $trx->jumlah = $model->jumlah;
+                $trx->tgl_trx = Ref::now();
+                $trx->status_trx = Ref::getCommit();
+                $trx->ref_id = $simpanan->id;
+                $trx->tipe =  Ref::debit();
+                $trx->instance=$simpanan;
+                if (!$trx->save()){
+                    throw new Exception('Data Transaksi Gagal Disimpan');
+                }
+
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Anggota Koperasi Baru Berhasil Ditambahkan');
+                return $this->refresh();
+            }catch(Exception $e){
+                $transaction->rollback();
+                Yii::$app->session->setFlash('error',$e->getMessage());
+            }
+            
+            
         }
 
         return $this->render('create', [

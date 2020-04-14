@@ -11,6 +11,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@uploadAnggota'   => '@app/storages/anggota',
     ],
     'language'=>'id',
     'timeZone'=>'Asia/Jakarta',
@@ -58,10 +59,10 @@ $config = [
             'class'=>'app\modules\simpanan\Module'
         ],
         'pinjaman'=>[
-            'class'=>'app\modules\simpanan\Module'
+            'class'=>'app\modules\pinjaman\Module'
         ],
         'angsuran'=>[
-            'class'=>'app\modules\simpanan\Module'
+            'class'=>'app\modules\angsuran\Module'
         ],
         'utilitas' => [
             'class' => 'app\modules\utilitas\Module',

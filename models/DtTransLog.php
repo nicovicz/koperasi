@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use thamtech\uuid\helpers\UuidHelper;
 
 /**
  * This is the model class for table "{{%dt_trans_log}}".
@@ -18,6 +19,7 @@ use Yii;
 class DtTransLog extends \yii\db\ActiveRecord
 {
     use \app\helpers\AuditTrait;
+    
     /**
      * {@inheritdoc}
      */
@@ -32,7 +34,8 @@ class DtTransLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'pesan', 'data', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['id'],'default','value'=>UuidHelper::uuid()],
+            [['pesan', 'data'], 'required'],
             [['pesan', 'data'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],

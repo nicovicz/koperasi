@@ -52,7 +52,7 @@ class m200405_021003_create_menu_table extends Migration
                         'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Anggota',
+                        'label'=>'Daftar Anggota',
                         'route'=>'/anggota/anggota/index',
                         'icon'=>'fa fa-arrow-right'
                     ],
@@ -63,52 +63,48 @@ class m200405_021003_create_menu_table extends Migration
                 'route'=>'#',
                 'icon'=>'fa fa-briefcase',
                 'items'=>[
-                    
                     [
                         'label'=>'Tambah Simpanan',
                         'route'=>'/simpanan/simpanan/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Daftar Simpanan',
                         'route'=>'/simpanan/simpanan/index',
-                        'icon'=>null
-                    ],
-                    [
-                        'label'=>'Tambah Pinjaman',
-                        'route'=>'/pinjaman/pinjaman/create',
-                        'icon'=>null
-                    ],
-                    [
-                        'label'=>'Pinjaman',
-                        'route'=>'/pinjaman/pinjaman/index',
-                        'icon'=>null
-                    ],
-                    [
-                        'label'=>'Tambah Angsuran',
-                        'route'=>'/angsuran/angsuran/create',
-                        'icon'=>null
-                    ],
-                    [
-                        'label'=>'Angsuran',
-                        'route'=>'/angsuran/angsuran/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                 ]
             ],
             [
-                'label'=>'Anggota',
+                'label'=>'Pinjaman',
                 'route'=>'#',
-                'icon'=>'fa fa-users',
+                'icon'=>'fa fa-dollar',
                 'items'=>[
                     [
-                        'label'=>'Tambah Anggota',
-                        'route'=>'/anggota/anggota/create',
+                        'label'=>'Tambah Pinjaman',
+                        'route'=>'/pinjaman/pinjaman/create',
                         'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Anggota',
-                        'route'=>'/anggota/anggota/index',
+                        'label'=>'Daftar Pinjaman',
+                        'route'=>'/pinjaman/pinjaman/index',
+                        'icon'=>'fa fa-arrow-right'
+                    ],
+                ]
+            ],
+            [
+                'label'=>'Angsuran',
+                'route'=>'#',
+                'icon'=>'fa fa-folder',
+                'items'=>[
+                    [
+                        'label'=>'Tambah Angsuran',
+                        'route'=>'/angsuran/angsuran/create',
+                        'icon'=>'fa fa-arrow-right'
+                    ],
+                    [
+                        'label'=>'Daftar Angsuran',
+                        'route'=>'/angsuran/angsuran/index',
                         'icon'=>'fa fa-arrow-right'
                     ],
                 ]
@@ -121,42 +117,42 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Jenis',
                         'route'=>'/master/jenis/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Jenis',
+                        'label'=>'Daftar Jenis',
                         'route'=>'/master/jenis/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Tambah Status',
                         'route'=>'/master/status/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Status',
+                        'label'=>'Daftar Status',
                         'route'=>'/master/status/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Tambah Transaksi',
                         'route'=>'/master/trx/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Transaksi',
+                        'label'=>'Daftar Transaksi',
                         'route'=>'/master/trx/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Tambah Unit',
                         'route'=>'/master/unit/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Unit',
+                        'label'=>'Daftar Unit',
                         'route'=>'/master/unit/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                 ]
             ],
@@ -168,42 +164,42 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Hak Akses',
                         'route'=>'/utilitas/role/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Hak Akses',
+                        'label'=>'Daftar Hak Akses',
                         'route'=>'/utilitas/role/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Tambah Hak Izin',
                         'route'=>'/utilitas/route/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Hak Izin',
+                        'label'=>'Daftar Hak Izin',
                         'route'=>'/utilitas/route/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Tambah Akun',
                         'route'=>'/utilitas/user/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Akun',
+                        'label'=>'Daftar Akun',
                         'route'=>'/utilitas/user/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
                         'label'=>'Tambah Menu',
                         'route'=>'/utilitas/menu/create',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                     [
-                        'label'=>'Menu',
+                        'label'=>'Daftar Menu',
                         'route'=>'/utilitas/menu/index',
-                        'icon'=>null
+                        'icon'=>'fa fa-arrow-right'
                     ],
                 ]
             ]

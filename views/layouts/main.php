@@ -55,7 +55,7 @@ AppAsset::register($this);
 
     <?php if (array_key_exists($p['id'],$child)):?>
       <li class="al-sidebar-list-item with-sub-menu ">
-        <a class="al-sidebar-list-link small" href="<?=$p['route']?>">
+        <a class="al-sidebar-list-link" href="<?=$p['route']?>">
           <i class="<?=$p['icon'];?>"></i>
           <span><?=$p['name'];?></span>
           <b class="fa fa-angle-down"></b>
@@ -63,16 +63,17 @@ AppAsset::register($this);
         <ul class="al-sidebar-sublist">
           <?php foreach($child[$p['id']] as $c):?>
             <li class="ba-sidebar-sublist-item">
-              <a href="<?=Url::to([$c['route']]);?>" class="small"><?=$c['name'];?></a>
+              <a href="<?=Url::to([$c['route']]);?>"><i class="<?=$c['icon'];?>"></i> 
+              <?=$c['name'];?></a>
             </li>
           <?php endforeach;?>
         </ul>
       </li>
     <?php else:?>
       <li class="al-sidebar-list-item">
-        <a class="al-sidebar-list-link">
-          <i class="ion-android-home"></i>
-          <span>Dashboard</span>
+        <a class="al-sidebar-list-link" href="<?=$p['route']?>">
+          <i class="<?=$p['icon'];?>"></i>
+          <span><?=$p['name'];?></span>
         </a>
       </li>
     <?php endif;?>
@@ -96,6 +97,7 @@ AppAsset::register($this);
 <div class="al-main">
   <div class="al-content">
   <div class="content-top clearfix">
+  <?=Alert::widget();?>
   <?php echo Breadcrumbs::widget([
     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 ]);?>

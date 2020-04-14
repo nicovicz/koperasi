@@ -12,8 +12,8 @@ class ActiveForm extends BaseActiveForm
     ];
 
     public $fieldConfig =[
-        'template' => "{label}\n<div class=\"col-lg-4\">{input}</div>\n<div class=\"col-lg-6\">{error}</div>",
-        'labelOptions' => ['class' => 'col-lg-2'],
+        'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9 pull-3\">{error}</div>",
+        'labelOptions' => ['class' => 'col-lg-3'],
     ];
     
     public function run()

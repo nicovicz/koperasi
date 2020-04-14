@@ -1,7 +1,8 @@
 <?php
-
+use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use app\helpers\Ref;
+use app\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\MstAnggota */
@@ -12,46 +13,57 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
+    <div class="col-lg-6">
+        <?= $form->field($model, 'nip')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'nip')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'jk')->radioList(['L'=>'Laki-Laki','P'=>'Perempuan']) ?>
 
-    <?= $form->field($model, 'jk')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'telp')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'jabatan')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'golongan')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'foto')->fileInput() ?>
 
-    <?= $form->field($model, 'bagian')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'sub_bagian')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'foto')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'telp')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'alamat')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'mst_status_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'mst_unit_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= $form->field($model, 'alamat')->textarea(['rows' => 6]) ?>
     </div>
 
+    <div class="col-lg-6">
+        <?= $form->field($model, 'jabatan')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'golongan')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'bagian')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'sub_bagian')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'mst_unit_id')->dropDownList(Ref::getUnit(),['prompt'=>'Pilih Unit']) ?>
+
+        <?= $form->field($model, 'mst_status_id')->radioList(Ref::getStatus()) ?>
+
+        <?= $form->field($model, 'jumlah')->textInput(['maxlength' => true]) ?>
+    </div>
+   
+    
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$url = Url::to(['/api/pegawai']);
+$golongan = '#'.Html::getInputId($model,'golongan');
+$nama = '#'.Html::getInputId($model,'nama');
+$jabatan = '#'.Html::getInputId($model,'jabatan');
+$bagian = '#'.Html::getInputId($model,'bagian');
+$sub_bagian  = '#'.Html::getInputId($model,'sub_bagian');
+$this->registerJs("
+
+$(document).on('click','.cari',function(e){
+    e.preventDefault();
+    var nip = $(this).val();
+    $.post('".$url."',{nip:nip},function(){
+
+    });
+});
+
+");
