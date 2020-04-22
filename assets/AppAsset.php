@@ -23,7 +23,9 @@ class AppAsset extends AssetBundle
       
         'css/vendor-2cae343ef1.css',
         'css/app-b6796b3788.css',
-        'css/site.css'
+        'css/jquery.growl.css',
+        'css/site.css',
+        
        
        
     ];
@@ -33,7 +35,9 @@ class AppAsset extends AssetBundle
         'js/jquery.easing.js',
         'js/jquery.slimscroll.js',
         'js/jstree.js',
-        'js/animate.js'
+        'js/animate.js',
+        'js/sweetalert2@9.js',
+        'js/jquery.growl.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

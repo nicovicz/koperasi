@@ -25,7 +25,7 @@ $config = [
         'definitions'=>[
             'yii\widgets\Breadcrumbs'=>[
                 'options'=>[
-                    'class'=>'breadcrumb al-breadcrumb'
+                    'class'=>'breadcrumb al-breadcrumb pull-left'
                 ]
             ],
             'yii\grid\SerialColumn'=>[
@@ -35,7 +35,7 @@ $config = [
             'yii\grid\ActionColumn'=>[
                 'header'=>'Aksi',
                 'headerOptions'=>['class'=>'text-center'],
-                'contentOptions'=>['class'=>'text-center']
+                'contentOptions'=>['class'=>'text-center action']
             ],
             'yii\data\Pagination'=>[
                 'pageSize'=>10
@@ -43,7 +43,10 @@ $config = [
             'yii\grid\GridView'=>[
                 'layout'=>"<div class='panel panel-blur light-text with-scroll animated zoomIn'>
                     <div class='panel-body'>
+                    
                       {items}
+                      <hr/>
+                      {summary}
                       <div class='pull-right'>{pager}</div>
                       <div class='clearfix'></div>
                     </div>

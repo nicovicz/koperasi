@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\DtSimpanan */
 
-$this->title = Yii::t('app', 'Create Dt Simpanan');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Dt Simpanans'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Tambah Simpanan Wajib';
+$this->params['breadcrumbs'][] = ['label' => 'Manajemen Simpanan', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['create']];
 ?>
 <div class="dt-simpanan-create">
 

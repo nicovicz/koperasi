@@ -4,30 +4,18 @@ namespace app\modules\simpanan\controllers;
 
 use Yii;
 use app\models\DtSimpanan;
+use app\models\DtTransaksi;
 use app\models\DtSimpananSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-
+use yii\db\Exception;
+use app\helpers\Ref;
 /**
  * SimpananController implements the CRUD actions for DtSimpanan model.
  */
 class SimpananController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    
 
     /**
      * Lists all DtSimpanan models.
@@ -66,8 +54,45 @@ class SimpananController extends Controller
     {
         $model = new DtSimpanan();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+                
+                // handling insert ke tabel simpanan
+                $model->mst_jenis_id = Ref::getSimpananWajib();
+                $model->status_trx = Ref::getCommit();
+                
+                if (!$model->save()){
+                    
+                    throw new Exception('Data Simpanan Gagal Disimpan');
+                    
+                }
+
+
+                // handling insert ke tabel transaksi
+                $trx = new DtTransaksi();
+                $trx->jumlah = $model->jumlah;
+                $trx->tgl_trx = Ref::now();
+                $trx->status_trx = Ref::getCommit();
+                $trx->ref_id = $model->id;
+                $trx->tipe =  Ref::debit();
+                $trx->instance=$model;
+                if (!$trx->save()){
+                    throw new Exception('Data Transaksi Gagal Disimpan');
+                }
+
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Simpanan Pokok Berhasil Ditambahkan');
+                
+            }catch(Exception $e){
+                $transaction->rollback();
+                Yii::$app->session->setFlash('error',$e->getMessage());
+            }
+
+            return $this->refresh();
+            
+            
         }
 
         return $this->render('create', [
@@ -75,25 +100,7 @@ class SimpananController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing DtSimpanan model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+    
 
     /**
      * Deletes an existing DtSimpanan model.
@@ -103,9 +110,38 @@ class SimpananController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    {   
+        $transaction = Yii::$app->db->beginTransaction();
+        try{
+            $model = $this->findModel($id);
+            $jenis = Ref::getJenisSimpanan($model->mst_jenis_id);
+            $model->status_trx = Ref::getRollback();
 
+            if (!$model->save()){
+                throw new Exception('Transaksi Simpanan '.$jenis.' Gagal Dibatalkan');
+            }
+
+            // ambil data dt_transaksi untuk dibatalkan
+            $transaksi = DtTransaksi::find()->where(['ref_id'=>$model->id])->one();
+            if (!$transaksi){
+                throw new Exception('Data Transaksi Hilang');
+            }
+
+            $transaksi->status_trx = Ref::getRollback();
+            $transaksi->instance = $model;
+            if (!$transaksi->save()){
+                throw new Exception('Transaksi Simpanan '.$jenis.' Gagal Dibatalkan');
+            }
+
+            $transaction->commit();
+            Yii::$app->session->setFlash('success','Transaksi Simpanan '.$jenis.' Berhasil Dibatalkan');
+
+        }catch(Exception $e){
+            $transaction->rollback();
+            Yii::$app->session->setFlash('error',$e->getMessage());
+        }
+       
+    
         return $this->redirect(['index']);
     }
 

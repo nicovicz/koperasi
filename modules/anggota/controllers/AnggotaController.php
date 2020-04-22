@@ -7,7 +7,6 @@ use app\models\MstAnggota;
 use app\models\MstAnggotaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use thamtech\uuid\helpers\UuidHelper;
 use app\helpers\Ref;
 use yii\db\Exception;
@@ -20,20 +19,7 @@ use app\models\DtTransaksi;
  */
 class AnggotaController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    
 
     /**
      * Lists all MstAnggota models.
@@ -158,9 +144,44 @@ class AnggotaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $old_foto = $model->foto;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+             // handling upload photo anggota
+             $photoName = UuidHelper::uuid().'.';
+             if (!is_dir($model->getUploadDir())){
+                 FileHelper::createDirectory($model->getUploadDir());
+             }
+
+             if (!empty($model->fotoTemp)){
+                 $getPartSchemas = explode('/',$model->fotoTemp);
+                 $lastSchema = explode('.',end($getPartSchemas));
+                 $getExtension = end($lastSchema);
+                 
+                 file_put_content($model->getUploadDir().$photoName,file_get_contents($model->fotoTemp));
+                 $model->foto = $photoName;
+             }else{
+                 $model->foto = UploadedFile::getInstance($model,'foto');
+
+                 if ($model->foto){
+                     
+                     if ($model->foto->saveAs($model->getUploadDir().$photoName)){
+                         $model->foto = $photoName;
+                     }
+
+                }else{
+                    $model->foto = $old_foto;
+                }
+             } 
+
+            if ($model->save()){
+                Yii::$app->session->setFlash('success','Data Anggota Koperasi Berhasil Diubah'); 
+            }else{
+                Yii::$app->session->setFlash('error','Data Anggota Koperasi Gagal Berhasil Diubah'); 
+            }
+
+            return $this->refresh();
         }
 
         return $this->render('update', [
@@ -177,8 +198,21 @@ class AnggotaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        if ($model->mst_status_id == Ref::getActiveStatus()){
+            $model->mst_status_id = Ref::getNonActiveStatus();
+            $message = 'Dinonaktifkan';
+        }else{
+            $model->mst_status_id = Ref::getActiveStatus();
+            $message = 'Diaktifkan';
+        }
+        
+        if ($model->save()){
+            Yii::$app->session->setFlash('success','Data Anggota Koperasi Berhasil '.$message);
+        }else{
+            Yii::$app->session->setFlash('error','Data Anggota Koperasi Gagal '.$message);
+        }
+       
         return $this->redirect(['index']);
     }
 

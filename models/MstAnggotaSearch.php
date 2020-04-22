@@ -41,6 +41,7 @@ class MstAnggotaSearch extends MstAnggota
     public function search($params)
     {
         $query = MstAnggota::find();
+        $query->orderBy(['mst_status_id'=>SORT_ASC,'created_at'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

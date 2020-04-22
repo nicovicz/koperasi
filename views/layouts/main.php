@@ -49,7 +49,8 @@ AppAsset::register($this);
   }))])->orderBy('order')->asArray()->all();
   $child = \yii\helpers\ArrayHelper::index($m,null,'parent');
  
- 
+ $current= Yii::$app->controller->uniqueId.'/'.Yii::$app->controller->action->id;
+ $expand = false;
   ?>
   <?php foreach($parent as $p):?>
 
@@ -141,6 +142,31 @@ $(document).on('click','.al-sidebar-list-item',function(e){
     main.addClass('ba-sidebar-item-expanded');
   }
 });
+
+yii.confirm =  function (message, ok, cancel) {
+  var that = $(this);
+    Swal.fire({
+     title : false,
+     icon: 'warning',
+     text : message,
+     showCancelButton: true
+    
+    }).then(function(result) {
+        if (result.value) {
+          
+          !ok || ok();		
+        }else{
+
+          !cancel || cancel();
+              
+        }
+
+        
+        
+    });
+    return false;
+
+};
 
 
 ");

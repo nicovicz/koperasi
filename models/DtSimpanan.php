@@ -4,7 +4,6 @@ namespace app\models;
 
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
-use app\helpers\Ref;
 /**
  * This is the model class for table "{{%dt_simpanan}}".
  *
@@ -65,11 +64,11 @@ class DtSimpanan extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'jumlah' => Yii::t('app', 'Jumlah'),
-            'tgl_trx' => Yii::t('app', 'Tgl Trx'),
+            'jumlah' => Yii::t('app', 'Jumlah Simpanan'),
+            'tgl_trx' => Yii::t('app', 'Tanggal Transaksi'),
             'status_trx' => Yii::t('app', 'Status Trx'),
             'mst_jenis_id' => Yii::t('app', 'Mst Jenis ID'),
-            'mst_anggota_id' => Yii::t('app', 'Mst Anggota ID'),
+            'mst_anggota_id' => Yii::t('app', 'Nama Anggota'),
             'created_at' => Yii::t('app', 'Created At'),
             'created_by' => Yii::t('app', 'Created By'),
             'updated_at' => Yii::t('app', 'Updated At'),

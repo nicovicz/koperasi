@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use thamtech\uuid\helpers\UuidHelper;
 /**
  * This is the model class for table "{{%dt_angsuran}}".
  *
@@ -24,6 +24,7 @@ use Yii;
  */
 class DtAngsuran extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */
@@ -39,7 +40,7 @@ class DtAngsuran extends \yii\db\ActiveRecord
     {
         return [
             [['id'],'default','value'=>UuidHelper::uuid()],
-            [['id', 'dt_pinjaman_id', 'angsuran_pokok', 'angsuran_bunga', 'angsuran_ke', 'tgl_trx', 'status_trx', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['dt_pinjaman_id', 'angsuran_pokok', 'angsuran_bunga', 'angsuran_ke',  'status_trx'], 'required'],
             [['angsuran_pokok', 'angsuran_bunga'], 'number'],
             [['angsuran_ke', 'status_trx', 'created_by', 'updated_by'], 'integer'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],

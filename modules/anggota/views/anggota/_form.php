@@ -40,9 +40,15 @@ use app\widgets\ActiveForm;
 
         <?= $form->field($model, 'mst_unit_id')->dropDownList(Ref::getUnit(),['prompt'=>'Pilih Unit']) ?>
 
+        <?php if ($model->isNewRecord):?>
+
         <?= $form->field($model, 'mst_status_id')->radioList(Ref::getStatus()) ?>
 
+       
+
         <?= $form->field($model, 'jumlah')->textInput(['maxlength' => true]) ?>
+
+        <?php endif;?>
     </div>
    
     

@@ -86,3 +86,23 @@ caption{
     background-color: transparent;
     border:1px solid #a6c733 
 }
+
+.breadcrumb > li + li:before {
+    color: #fff;
+    font-family: FontAwesome;
+    content: "\f101 ";
+    padding: 0 5px;
+}
+
+.breadcrumb > li.active {
+    color: #fff;
+   
+}
+
+.al-breadcrumb > li > a{
+    color: #fff;
+}
+
+.action > a {
+    color:#fff;
+}

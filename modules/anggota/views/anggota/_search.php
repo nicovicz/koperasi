@@ -2,13 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use app\widgets\Panel;
+use app\helpers\Ref;
 /* @var $this yii\web\View */
 /* @var $model app\models\MstAnggotaSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="mst-anggota-search">
+<?php Panel::begin([
+    'title'=>'Pencarian Data Anggota',
+    'icon'=>'fa fa-filter'
+]);?>
+<div class="mst-anggota-search row">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,47 +22,46 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    
+    <div class="col-lg-2">
+    <?= $form->field($model, 'nip')->label(false)->textInput([
+        'placeholder'=>'NIP Pegawai'
+    ]); ?>
+    </div>
+    <div class="col-lg-3">   
+    <?= $form->field($model, 'nama')->label(false)->textInput([
+        'placeholder'=>'Nama Pegawai'
+    ]);?>
+    </div>
+  
+    <div class="col-lg-2">      
+    <?= $form->field($model, 'jabatan')->label(false)->textInput([
+        'placeholder'=>'Jabatan Pegawai'
+    ]); ?>
+    </div>
 
-    <?= $form->field($model, 'nip') ?>
+    <div class="col-lg-3">      
+    <?= $form->field($model, 'sub_bagian')->label(false)->textInput([
+        'placeholder'=>'Unit Kerja'
+    ]); ?>
+    </div>
 
-    <?= $form->field($model, 'nama') ?>
+    <div class="col-lg-2">  
+    <?php echo $form->field($model, 'mst_status_id')->label(false)->dropDownList(Ref::getStatus(),[
+        'prompt'=>'Status Anggota'
+    ]) ?>
+    </div>
 
-    <?= $form->field($model, 'jk') ?>
+   
 
-    <?= $form->field($model, 'jabatan') ?>
+    
 
-    <?php // echo $form->field($model, 'golongan') ?>
-
-    <?php // echo $form->field($model, 'bagian') ?>
-
-    <?php // echo $form->field($model, 'sub_bagian') ?>
-
-    <?php // echo $form->field($model, 'foto') ?>
-
-    <?php // echo $form->field($model, 'telp') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
-
-    <?php // echo $form->field($model, 'alamat') ?>
-
-    <?php // echo $form->field($model, 'mst_status_id') ?>
-
-    <?php // echo $form->field($model, 'mst_unit_id') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'created_by') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'updated_by') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+    <div class="col-lg-12">
+        <?= Html::submitButton('<i class="fa fa-search"></i> '.Yii::t('app', 'Cari'), ['class' => 'btn btn-primary']) ?>
+       
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php Panel::end();?>

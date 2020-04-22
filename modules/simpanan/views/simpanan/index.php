@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'tgl_trx',
            
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','template'=>'{view} {delete}'],
         ],
     ]); ?>
 

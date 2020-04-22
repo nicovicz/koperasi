@@ -31,9 +31,9 @@ class Alert extends \yii\bootstrap\Widget
      * - value: the bootstrap alert type (i.e. danger, success, info, warning)
      */
     public $alertTypes = [
-        'error'   => 'alert-danger',
+        'error'   => 'error',
         'danger'  => 'alert-danger',
-        'success' => 'alert-success',
+        'success' => 'notice',
         'info'    => 'alert-info',
         'warning' => 'alert-warning'
     ];
@@ -52,24 +52,20 @@ class Alert extends \yii\bootstrap\Widget
         $session = Yii::$app->session;
         $flashes = $session->getAllFlashes();
         $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
-
+        $flashesGrowl = [];
         foreach ($flashes as $type => $flash) {
             if (!isset($this->alertTypes[$type])) {
                 continue;
             }
 
             foreach ((array) $flash as $i => $message) {
-                echo \yii\bootstrap\Alert::widget([
-                    'body' => $message,
-                    'closeButton' => $this->closeButton,
-                    'options' => array_merge($this->options, [
-                        'id' => $this->getId() . '-' . $type . '-' . $i,
-                        'class' => $this->alertTypes[$type] . $appendClass,
-                    ]),
-                ]);
+                $flashesGrowl[]= '$.growl.'.$this->alertTypes[$type].'({title:"", message: "'.$message.'" });';
+                    
             }
 
             $session->removeFlash($type);
         }
+        
+        $this->getView()->registerJs(implode('',$flashesGrowl));
     }
 }

@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
 use yii\helpers\ArrayHelper;
+use app\helpers\Ref;
 /**
  * This is the model class for table "{{%mst_anggota}}".
  *
@@ -66,8 +67,8 @@ class MstAnggota extends \yii\db\ActiveRecord
             [['nama', 'mst_status_id', 'mst_unit_id'], 'required'],
             [['alamat'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by'], 'integer'],
-            [['id', 'mst_status_id', 'mst_unit_id'], 'string', 'max' => 64],
+            [['created_by', 'updated_by','mst_status_id'], 'integer'],
+            [['id', 'mst_unit_id'], 'string', 'max' => 64],
             [['foto'],'file','extensions'=>['jpg','jpeg','png']],
             [['nip', 'nama', 'jk', 'jabatan', 'golongan', 'bagian', 'sub_bagian',  'telp', 'email'], 'string', 'max' => 255],
             [['id'], 'unique'],
@@ -83,9 +84,9 @@ class MstAnggota extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'nip' => Yii::t('app', 'Nip'),
-            'nama' => Yii::t('app', 'Nama'),
-            'jk' => Yii::t('app', 'Jk'),
+            'nip' => Yii::t('app', 'NIP Pegawai'),
+            'nama' => Yii::t('app', 'Nama Lengkap'),
+            'jk' => Yii::t('app', 'Jenis Kelamin'),
             'jabatan' => Yii::t('app', 'Jabatan'),
             'golongan' => Yii::t('app', 'Golongan'),
             'bagian' => Yii::t('app', 'Bagian'),
@@ -94,8 +95,8 @@ class MstAnggota extends \yii\db\ActiveRecord
             'telp' => Yii::t('app', 'Telp'),
             'email' => Yii::t('app', 'Email'),
             'alamat' => Yii::t('app', 'Alamat'),
-            'mst_status_id' => Yii::t('app', 'Mst Status ID'),
-            'mst_unit_id' => Yii::t('app', 'Mst Unit ID'),
+            'mst_status_id' => Yii::t('app', 'Status Anggota'),
+            'mst_unit_id' => Yii::t('app', 'Unit Kerja'),
             'created_at' => Yii::t('app', 'Created At'),
             'created_by' => Yii::t('app', 'Created By'),
             'updated_at' => Yii::t('app', 'Updated At'),
@@ -141,5 +142,19 @@ class MstAnggota extends \yii\db\ActiveRecord
     public function getMstUnit()
     {
         return $this->hasOne(MstUnit::className(), ['id' => 'mst_unit_id']);
+    }
+
+    public function getAvatar()
+    {
+        
+    }
+
+    public function getStatusAnggota()
+    {
+        if ($this->mst_status_id == Ref::getActiveStatus()){
+            return '<span class="tag label label-primary family">Aktif</span>';
+        }
+
+        return '<span class="tag label label-danger family">Tidak Aktif</span>';
     }
 }

@@ -30,6 +30,7 @@ class m200311_043055_create_transaksi_table extends Migration
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->datetime()->notNull(),
             'updated_by' => $this->integer()->notNull(),
+            'PRIMARY KEY(id)'
         ],$tableOptions);
     }
 

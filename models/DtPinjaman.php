@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use thamtech\uuid\helpers\UuidHelper;
 /**
  * This is the model class for table "{{%dt_pinjaman}}".
  *
@@ -30,6 +30,7 @@ use Yii;
  */
 class DtPinjaman extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */
@@ -44,7 +45,8 @@ class DtPinjaman extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'tgl_trx', 'jumlah', 'bunga', 'tenor', 'status_trx', 'status_pinjaman', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['id'],'default','value'=>UuidHelper::uuid()],
+            [['tgl_trx', 'jumlah', 'bunga', 'tenor', 'status_trx', 'status_pinjaman', 'mst_anggota_id', 'mst_jenis_id'], 'required'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['jumlah', 'bunga'], 'number'],
             [['tenor', 'status_trx', 'status_pinjaman', 'created_by', 'updated_by'], 'integer'],
@@ -65,13 +67,13 @@ class DtPinjaman extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'tgl_trx' => Yii::t('app', 'Tgl Trx'),
-            'jumlah' => Yii::t('app', 'Jumlah'),
+            'tgl_trx' => Yii::t('app', 'Tanggal Transaksi'),
+            'jumlah' => Yii::t('app', 'Jumlah Pinjaman'),
             'bunga' => Yii::t('app', 'Bunga'),
             'tenor' => Yii::t('app', 'Tenor'),
             'status_trx' => Yii::t('app', 'Status Trx'),
             'status_pinjaman' => Yii::t('app', 'Status Pinjaman'),
-            'mst_anggota_id' => Yii::t('app', 'Mst Anggota ID'),
+            'mst_anggota_id' => Yii::t('app', 'Nama Anggota'),
             'mst_jenis_id' => Yii::t('app', 'Mst Jenis ID'),
             'created_at' => Yii::t('app', 'Created At'),
             'created_by' => Yii::t('app', 'Created By'),
