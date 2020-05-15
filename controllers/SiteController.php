@@ -7,6 +7,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\MstAnggota;
+use yii\web\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -92,6 +94,23 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionPreview($id)
+    {
+        if (($model = MstAnggota::findOne($id)) === null) {
+           
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        if (empty($model->foto)){
+            $path = Yii::getAlias('@uploadAnggota').'/no.png';
+        }else{
+            $path = $model->getUploadDir().$model->foto;
+        }
+        
+       
+        return Yii::$app->response->sendFile($path, $model->nip, ['inline' => true])->send();
     }
 
     

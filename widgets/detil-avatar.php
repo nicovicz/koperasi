@@ -1,0 +1,2 @@
+<img src="<?=$anggota->getAvatar();?>" class="media-objectm img-circle" alt="Foto" style="width:150px;height:150px;margin-bottom:3%" />
+                <p class="text-center"><?=$anggota->getStatusAnggota();?></p>

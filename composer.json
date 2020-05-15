@@ -19,7 +19,10 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "thamtech/yii2-uuid": "*",
-        "hscstudio/yii2-mimin": "~1.1.5"
+        "hscstudio/yii2-mimin": "~1.1.5",
+        "mongosoft/yii2-soap-client": "*",
+        "nasution/terbilang": "^0.0.4",
+        "miloschuman/yii2-highcharts-widget": "^8.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

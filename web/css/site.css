@@ -106,3 +106,35 @@ caption{
 .action > a {
     color:#fff;
 }
+
+.action >  a > span.fa-times-circle{
+    color:#F22613;
+   
+}
+
+.action >  a > span.fa-check-circle{
+    color:#36D7B7;
+   
+}
+
+.action >  a > span.glyphicon-pencil{
+    color:#F5D76E;
+    
+}
+
+.action >  a > span.glyphicon-eye-open{
+    color:#22A7F0;
+    
+}
+
+.action >  a > span.glyphicon-trash{
+    color:#F22613;
+   
+}
+
+
+
+.text-bold{
+    font-weight: bold;
+}
+

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
+use app\helpers\Ref;
 /**
  * This is the model class for table "{{%dt_pinjaman}}".
  *
@@ -31,6 +32,7 @@ use thamtech\uuid\helpers\UuidHelper;
 class DtPinjaman extends \yii\db\ActiveRecord
 {
     use \app\helpers\AuditTrait;
+    
     /**
      * {@inheritdoc}
      */
@@ -46,17 +48,17 @@ class DtPinjaman extends \yii\db\ActiveRecord
     {
         return [
             [['id'],'default','value'=>UuidHelper::uuid()],
-            [['tgl_trx', 'jumlah', 'bunga', 'tenor', 'status_trx', 'status_pinjaman', 'mst_anggota_id', 'mst_jenis_id'], 'required'],
-            [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
-            [['jumlah', 'bunga'], 'number'],
-            [['tenor', 'status_trx', 'status_pinjaman', 'created_by', 'updated_by'], 'integer'],
+            [['tgl_trx', 'jumlah', 'tenor', 'status_trx', 'status_pinjaman', 'mst_anggota_id', 'mst_jenis_id'], 'required'],
+            [['tgl_trx', 'created_at', 'updated_at','bunga'], 'safe'],
+            [['jumlah', 'bunga','tenor',], 'number'],
+            [[ 'status_trx', 'status_pinjaman', 'created_by', 'updated_by'], 'integer'],
             [['id', 'mst_anggota_id', 'mst_jenis_id'], 'string', 'max' => 64],
             [['id'], 'unique'],
             [['mst_anggota_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstAnggota::className(), 'targetAttribute' => ['mst_anggota_id' => 'id']],
             [['mst_jenis_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstJenis::className(), 'targetAttribute' => ['mst_jenis_id' => 'id']],
             [['status_pinjaman'], 'exist', 'skipOnError' => true, 'targetClass' => MstStatus::className(), 'targetAttribute' => ['status_pinjaman' => 'id']],
             [['status_trx'], 'exist', 'skipOnError' => true, 'targetClass' => MstTrx::className(), 'targetAttribute' => ['status_trx' => 'id']],
-            [['status_trx'], 'exist', 'skipOnError' => true, 'targetClass' => MstTrx::className(), 'targetAttribute' => ['status_trx' => 'id']],
+           
         ];
     }
 
@@ -70,7 +72,7 @@ class DtPinjaman extends \yii\db\ActiveRecord
             'tgl_trx' => Yii::t('app', 'Tanggal Transaksi'),
             'jumlah' => Yii::t('app', 'Jumlah Pinjaman'),
             'bunga' => Yii::t('app', 'Bunga'),
-            'tenor' => Yii::t('app', 'Tenor'),
+            'tenor' => Yii::t('app', 'Cicilan'),
             'status_trx' => Yii::t('app', 'Status Trx'),
             'status_pinjaman' => Yii::t('app', 'Status Pinjaman'),
             'mst_anggota_id' => Yii::t('app', 'Nama Anggota'),
@@ -89,7 +91,15 @@ class DtPinjaman extends \yii\db\ActiveRecord
      */
     public function getDtAngsurans()
     {
-        return $this->hasMany(DtAngsuran::className(), ['dt_pinjaman_id' => 'id']);
+        return $this->hasMany(DtAngsuran::className(), ['dt_pinjaman_id' => 'id'])
+            ->orderBy(['angsuran_ke'=>SORT_ASC]);
+    }
+
+    public function getJumlahAngsuranLunas()
+    {
+        return $this->hasMany(DtAngsuran::className(), ['dt_pinjaman_id' => 'id'])
+            ->where(['dt_angsuran.status_trx'=>Ref::getCommit()])
+            ->andWhere('dt_angsuran.tgl_trx is not null')->count();
     }
 
     /**
@@ -140,5 +150,31 @@ class DtPinjaman extends \yii\db\ActiveRecord
     public function getStatusTrx0()
     {
         return $this->hasOne(MstTrx::className(), ['id' => 'status_trx']);
+    }
+
+    public function getDisplayPinjaman()
+    {
+        return sprintf('<div class="name-container">
+                       
+                        <div>
+                            <span class="small">Jumlah <strong>%s</strong></span>
+                        </div>
+                        <div  style="margin-top:-9%%">
+                            <span class="small">Cicilan <i>%s Bulan</i></span>
+                        </div>
+                        <div style="margin-top:-9%%">
+                            <span class="small">Bunga <i>%s %%</i></span>
+                        </div>
+                        <div style="margin-top:-9%%">
+                            <span class="small">Angsuran %s</span>
+                        </div>
+                        
+                        
+                    </div>',
+                        Yii::$app->formatter->asCurrency($this->jumlah),
+                        $this->tenor,
+                        $this->bunga,
+                        $this->jumlahAngsuranLunas.'/'.$this->tenor);
+                        
     }
 }

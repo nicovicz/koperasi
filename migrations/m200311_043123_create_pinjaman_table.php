@@ -20,9 +20,9 @@ class m200311_043123_create_pinjaman_table extends Migration
 
         $this->createTable('{{%dt_pinjaman}}', [
             'id' => $this->string(64)->notNull(),
-            'tgl_trx' => $this->datetime()->notNull(),
+            'tgl_trx' => $this->date()->notNull(),
             'jumlah' => $this->decimal(10,2)->notNull(),
-            'bunga' => $this->decimal(10,2)->notNull(),
+            'bunga' =>  $this->integer()->notNull(),
             'tenor' => $this->integer()->notNull(),
             'status_trx' => $this->integer()->unsigned()->notNull(),
             'status_pinjaman' => $this->integer()->unsigned()->notNull(),

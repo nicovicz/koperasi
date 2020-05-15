@@ -15,7 +15,7 @@ use app\helpers\Ref;
  */
 class SimpananController extends Controller
 {
-    
+    use \app\helpers\AuthGuardTrait;
 
     /**
      * Lists all DtSimpanan models.
@@ -57,15 +57,15 @@ class SimpananController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $transaction = Yii::$app->db->beginTransaction();
+
             try{
-                
+                $namaSimpanan = Ref::getJenisSimpanan($model->mst_jenis_id);
                 // handling insert ke tabel simpanan
-                $model->mst_jenis_id = Ref::getSimpananWajib();
                 $model->status_trx = Ref::getCommit();
                 
                 if (!$model->save()){
                     
-                    throw new Exception('Data Simpanan Gagal Disimpan');
+                    throw new Exception("Transaksi $namaSimpanan Gagal Disimpan");
                     
                 }
 
@@ -79,11 +79,11 @@ class SimpananController extends Controller
                 $trx->tipe =  Ref::debit();
                 $trx->instance=$model;
                 if (!$trx->save()){
-                    throw new Exception('Data Transaksi Gagal Disimpan');
+                    throw new Exception("Transaksi $namaSimpanan Gagal Disimpan");
                 }
 
                 $transaction->commit();
-                Yii::$app->session->setFlash('success','Simpanan Pokok Berhasil Ditambahkan');
+                Yii::$app->session->setFlash('success',"Transaksi $namaSimpanan Berhasil Disimpan");
                 
             }catch(Exception $e){
                 $transaction->rollback();

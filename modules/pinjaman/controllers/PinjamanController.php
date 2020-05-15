@@ -16,7 +16,7 @@ use app\helpers\Ref;
  */
 class PinjamanController extends Controller
 {
-    
+    use \app\helpers\AuthGuardTrait;
 
     /**
      * Lists all DtPinjaman models.
@@ -32,6 +32,7 @@ class PinjamanController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
 
     /**
      * Displays a single DtPinjaman model.
@@ -69,30 +70,33 @@ class PinjamanController extends Controller
 
                 // save data pinjaman
                 $model->status_trx =  Ref::getCommit();
-                $model->status_pinjaman = Ref::getActiveStatus();
+                $model->status_pinjaman = Ref::getNonActiveStatus();
                 $model->mst_jenis_id = Ref::getPinjaman();
+                $model->bunga = $model->tenor;
 
                 if (!$model->save()){
-                    var_dump($model->errors);die;
+                    
                     throw new Exception('Pinjaman Koperasi Gagal Disimpan');
                 }
-
+               
                 // save data angsuran
-
                 $pokok = $model->jumlah / $model->tenor;
-                $bunga = (($model->bunga/100)*$model->jumlah)/12;
+                $bunga = ($model->bunga/100)*$model->jumlah;
+                
                 for($i=1;$i<=$model->tenor;$i++){
                     $angsuran = new DtAngsuran();
                     $angsuran->dt_pinjaman_id = $model->id;
                     $angsuran->angsuran_pokok = $pokok;
                     $angsuran->angsuran_bunga = $bunga;
                     $angsuran->angsuran_ke = $i;
+                    $angsuran->jumlah = 0;
                     $angsuran->status_trx = Ref::getInit();
                     if (!$angsuran->save()){
                         throw new Exception('Data Angsuran Gagal Disimpan');
                     }
+                   
                 }
-
+             
                 // handling insert ke tabel transaksi
                 $trx = new DtTransaksi();
                 $trx->jumlah = -$model->jumlah;
@@ -102,7 +106,7 @@ class PinjamanController extends Controller
                 $trx->tipe =  Ref::kredit();
                 $trx->instance=$model;
                 if (!$trx->save()){
-                    throw new Exception('Data Transaksi Gagal Disimpan');
+                    throw new Exception('Pinjaman Koperasi Gagal Disimpann');
                 }
 
                 $transaction->commit();
@@ -111,7 +115,10 @@ class PinjamanController extends Controller
             }catch(Exception $e){
                 $transaction->rollback();
                 Yii::$app->session->setFlash('error',$e->getMessage());
+                
             }
+
+            return $this->refresh();
         }
 
         return $this->render('create', [
@@ -128,9 +135,44 @@ class PinjamanController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $model = $this->findModel($id);
+    {   
+        $transaction = Yii::$app->db->beginTransaction();
+        try{
+            $model = $this->findModel($id);
+            $jenis = Ref::getJenisSimpanan($model->mst_jenis_id);
 
+            if ($model->status_trx == Ref::getNonActiveStatus()){
+                throw new Exception('Transaksi Pinjaman '.$jenis.' Tidak Dapat Dibatalkan Karena Sudah Lunas');
+            }
+
+           
+            $model->status_trx = Ref::getRollback();
+
+            if (!$model->save()){
+                throw new Exception('Transaksi Pinjaman '.$jenis.' Gagal Dibatalkan');
+            }
+
+            // ambil data dt_transaksi untuk dibatalkan
+            $transaksi = DtTransaksi::find()->where(['ref_id'=>$model->id])->one();
+            if (!$transaksi){
+                throw new Exception('Data Transaksi Hilang');
+            }
+
+            $transaksi->status_trx = Ref::getRollback();
+            $transaksi->instance = $model;
+            if (!$transaksi->save()){
+                throw new Exception('Transaksi Pinjaman '.$jenis.' Gagal Dibatalkan');
+            }
+
+            $transaction->commit();
+            Yii::$app->session->setFlash('success','Transaksi Pinjaman '.$jenis.' Berhasil Dibatalkan');
+
+        }catch(Exception $e){
+            $transaction->rollback();
+            Yii::$app->session->setFlash('error',$e->getMessage());
+        }
+       
+    
         return $this->redirect(['index']);
     }
 

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
+use app\helpers\Ref;
 /**
  * This is the model class for table "{{%dt_simpanan}}".
  *
@@ -67,7 +68,7 @@ class DtSimpanan extends \yii\db\ActiveRecord
             'jumlah' => Yii::t('app', 'Jumlah Simpanan'),
             'tgl_trx' => Yii::t('app', 'Tanggal Transaksi'),
             'status_trx' => Yii::t('app', 'Status Trx'),
-            'mst_jenis_id' => Yii::t('app', 'Mst Jenis ID'),
+            'mst_jenis_id' => Yii::t('app', 'Jenis Simpanan'),
             'mst_anggota_id' => Yii::t('app', 'Nama Anggota'),
             'created_at' => Yii::t('app', 'Created At'),
             'created_by' => Yii::t('app', 'Created By'),
@@ -94,6 +95,34 @@ class DtSimpanan extends \yii\db\ActiveRecord
     public function getMstJenis()
     {
         return $this->hasOne(MstJenis::className(), ['id' => 'mst_jenis_id']);
+    }
+
+    /**
+     * Gets query for [[StatusTrx]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatusTrx()
+    {
+        return $this->hasOne(MstTrx::className(), ['id' => 'status_trx']);
+    }
+
+    public function getDisplaySimpanan()
+    {
+        return sprintf('<div class="name-container">
+                        <div>
+                            <strong><i class="fa fa-dollar"></i> %s</strong>
+                        </div>
+                        <div>
+                            <span class="small"><i>%s - %s</i></span>
+                        </div>
+                        
+                        
+                    </div>',
+                        $this->mstJenis->nama,
+                        Yii::$app->formatter->asDatetime($this->tgl_trx),
+                        Ref::trxTranslate($this->status_trx));
+                        
     }
 
     

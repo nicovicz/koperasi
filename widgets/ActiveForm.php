@@ -24,8 +24,15 @@ class ActiveForm extends BaseActiveForm
 
         $content = ob_get_clean();
         $wrapper = '<div class="panel panel-blur light-text with-scroll animated zoomIn"
-        ><div class="panel-heading"><h3><i class="fa fa-sticky-note"></i> '.$this->getView()->title.'</h3>
-        </div><div class="panel-body">';
+        >';
+
+        if ($this->getView()->title){
+            $wrapper .= '<div class="panel-heading"><h3><i class="fa fa-sticky-note"></i> '.$this->getView()->title.'</h3>
+            </div>';
+        }
+        
+        
+        $wrapper .='<div class="panel-body">';
         $html = $wrapper.Html::beginForm($this->action, $this->method, $this->options);
         $html .= $content;
 

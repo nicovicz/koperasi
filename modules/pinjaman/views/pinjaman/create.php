@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use app\helpers\Ref;
 /* @var $this yii\web\View */
 /* @var $model app\models\DtPinjaman */
 
@@ -11,7 +11,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="dt-pinjaman-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

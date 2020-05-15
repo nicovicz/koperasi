@@ -25,30 +25,38 @@ use app\helpers\Ref;
     
     <div class="col-lg-2">
     <?= $form->field($model, 'nip')->label(false)->textInput([
-        'placeholder'=>'NIP Pegawai'
+        'placeholder'=>$model->getAttributeLabel('nip')
     ]); ?>
     </div>
-    <div class="col-lg-3">   
+    <div class="col-lg-2">   
     <?= $form->field($model, 'nama')->label(false)->textInput([
-        'placeholder'=>'Nama Pegawai'
+        'placeholder'=>$model->getAttributeLabel('nama')
     ]);?>
     </div>
   
     <div class="col-lg-2">      
     <?= $form->field($model, 'jabatan')->label(false)->textInput([
-        'placeholder'=>'Jabatan Pegawai'
+        'placeholder'=>$model->getAttributeLabel('jabatan')
     ]); ?>
     </div>
 
-    <div class="col-lg-3">      
+    
+
+    <div class="col-lg-2">      
+    <?= $form->field($model, 'mst_unit_id')->label(false)->dropDownList(Ref::getUnit(),[
+        'prompt'=>$model->getAttributeLabel('mst_unit_id')
+    ]) ?>
+    </div>
+
+    <div class="col-lg-2">      
     <?= $form->field($model, 'sub_bagian')->label(false)->textInput([
-        'placeholder'=>'Unit Kerja'
+        'placeholder'=>$model->getAttributeLabel('sub_bagian')
     ]); ?>
     </div>
 
     <div class="col-lg-2">  
     <?php echo $form->field($model, 'mst_status_id')->label(false)->dropDownList(Ref::getStatus(),[
-        'prompt'=>'Status Anggota'
+        'prompt'=>$model->getAttributeLabel('mst_status_id')
     ]) ?>
     </div>
 

@@ -20,7 +20,7 @@ class m200311_065929_create_simpanan_table extends Migration
         $this->createTable('{{%dt_simpanan}}', [
             'id' => $this->string(64)->notNull(),
             'jumlah' => $this->decimal(10,2)->notNull(),
-            'tgl_trx' => $this->datetime()->notNull(),
+            'tgl_trx' => $this->date()->notNull(),
             'status_trx' => $this->integer()->unsigned()->notNull(),
             'mst_jenis_id' => $this->string(64)->notNull(),
             'mst_anggota_id' => $this->string(64)->notNull(),
@@ -52,7 +52,7 @@ class m200311_065929_create_simpanan_table extends Migration
 
         $this->addForeignKey(
             'fk-simpanan-trx',
-            'dt_pinjaman',
+            'dt_simpanan',
             'status_trx',
             'mst_trx',
             'id',

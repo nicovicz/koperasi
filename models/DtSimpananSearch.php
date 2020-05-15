@@ -11,12 +11,20 @@ use app\models\DtSimpanan;
  */
 class DtSimpananSearch extends DtSimpanan
 {
+
+    public $nama,$unit,$nip,$sub_bagian;
+    public function init()
+    {
+        
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [['nama','unit','nip','sub_bagian'],'safe'],
             [['id', 'tgl_trx', 'mst_jenis_id', 'mst_anggota_id', 'created_at', 'updated_at'], 'safe'],
             [['jumlah'], 'number'],
             [['status_trx', 'created_by', 'updated_by'], 'integer'],
@@ -42,7 +50,8 @@ class DtSimpananSearch extends DtSimpanan
     public function search($params)
     {
         $query = DtSimpanan::find();
-
+        $query->joinWith(['mstAnggota']);
+        $query->orderBy(['updated_at'=>SORT_DESC,'status_trx'=>SORT_ASC]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -59,18 +68,14 @@ class DtSimpananSearch extends DtSimpanan
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'jumlah' => $this->jumlah,
             'tgl_trx' => $this->tgl_trx,
             'status_trx' => $this->status_trx,
-            'created_at' => $this->created_at,
-            'created_by' => $this->created_by,
-            'updated_at' => $this->updated_at,
-            'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'mst_jenis_id', $this->mst_jenis_id])
-            ->andFilterWhere(['like', 'mst_anggota_id', $this->mst_anggota_id]);
+        $query->andFilterWhere(['like', 'mst_anggota.nip', $this->nip])
+            ->andFilterWhere(['like', 'mst_anggota.nama', $this->nama])
+            ->andFilterWhere(['like', 'mst_anggota.mst_unit_id', $this->unit])
+            ->andFilterWhere(['like', 'mst_anggota.sub_bagian', $this->sub_bagian]);
 
         return $dataProvider;
     }

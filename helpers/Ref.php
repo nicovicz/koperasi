@@ -20,6 +20,11 @@ class Ref
         return ArrayHelper::map(MstStatus::find()->all(),'id','nama');
     }
 
+    public static function getTrx()
+    {
+        return [1=>'Draft',2=>'Sukses',3=>'Batal'];
+    }
+
     public static function getSimpananPokok()
     {
         $model = MstJenis::find()->where(['nama'=>'Simpanan Pokok'])->one();
@@ -44,9 +49,16 @@ class Ref
         
     }
 
+    public static function getJumlahSimpananWajib()
+    {
+        $model = MstJenis::find()->where(['nama'=>'Simpanan Wajib'])->one();
+        if ($model) return $model->jumlah;
+        return null;
+    }
+
     public static function getPinjaman()
     {
-        $model = MstJenis::find()->where(['nama'=>'Pinjaman Bunga menurun (RC)'])->one();
+        $model = MstJenis::find()->where(['nama'=>'Pinjaman Bunga Tetap'])->one();
         if ($model) return $model->id;
         return null;
         
@@ -100,7 +112,7 @@ class Ref
 
     public static function now()
     {
-        return Yii::$app->formatter->asDatetime(time(),'php:Y-m-d H:i:s');
+        return Yii::$app->formatter->asDate(time(),'php:Y-m-d');
     }
 
     public static function debit()
@@ -111,6 +123,41 @@ class Ref
     public static function kredit()
     {
         return 'K';
+    }
+
+    public static function trxTranslate($id)
+    {
+        $trx = [
+            1 => '<label class="badge label-info badge"><i class="fa fa-book"></i> Draft</label>',
+            2 => '<label class="badge label-success"><i class="fa fa-check-circle"></i> Sukses</label>',
+            3 => '<label class="badge label-danger badge"><i class="fa fa-times-circle"></i> Batal</label>'
+        ];
+
+        return array_key_exists($id,$trx)?$trx[$id]:
+        '<label class="badge label-danger badge"><i class="fa fa-times-circle"></i> Tidak Terdefinisi</label>';
+    }
+
+    public static function pinjamanTranslate($id)
+    {
+        $trx = [
+           
+            1 => '<label class="badge label-success small"><i class="fa fa-check-circle"></i> Lunas</label>',
+            2 => '<label class="badge label-danger badge small"><i class="fa fa-times-circle"></i> Belum Lunas</label>'
+        ];
+
+        return array_key_exists($id,$trx)?$trx[$id]:
+        '<label class="badge label-danger badge small"><i class="fa fa-times-circle"></i> Tidak Terdefinisi</label>';
+    }
+
+    public static function HitungPerBulan($modelPinjaman)
+    {
+        $pokok = $modelPinjaman->jumlah / $modelPinjaman->tenor;
+        $bunga = ($modelPinjaman->bunga/100)*$modelPinjaman->jumlah;
+
+        return [
+            'pokok'=>$pokok,
+            'bunga'=>$bunga
+        ];
     }
 
 

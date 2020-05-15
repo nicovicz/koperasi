@@ -11,12 +11,14 @@ use app\models\DtPinjaman;
  */
 class DtPinjamanSearch extends DtPinjaman
 {
+    public $nama,$unit,$nip,$sub_bagian;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [['nama','unit','nip','sub_bagian'],'safe'],
             [['id', 'tgl_trx', 'mst_anggota_id', 'mst_jenis_id', 'created_at', 'updated_at'], 'safe'],
             [['jumlah', 'bunga'], 'number'],
             [['tenor', 'status_trx', 'status_pinjaman', 'created_by', 'updated_by'], 'integer'],

@@ -41,7 +41,7 @@ use kartik\date\DatePicker;
 
     <?= $form->field($model, 'jumlah')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'bunga')->textInput(['maxlength' => true])->hint('Dalam Persen') ?>
+   
 
     <?= $form->field($model, 'tenor')->textInput() ?>
 

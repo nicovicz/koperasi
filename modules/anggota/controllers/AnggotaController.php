@@ -58,6 +58,7 @@ class AnggotaController extends Controller
     {
         $model = new MstAnggota();
         $model->mst_status_id = Ref::getActiveStatus();
+        $model->jumlah = Ref::getJumlahSimpananWajib();
         if ($model->load(Yii::$app->request->post())) {
 
             $transaction = Yii::$app->db->beginTransaction();
@@ -70,12 +71,22 @@ class AnggotaController extends Controller
                 }
 
                 if (!empty($model->fotoTemp)){
-                    $getPartSchemas = explode('/',$model->fotoTemp);
-                    $lastSchema = explode('.',end($getPartSchemas));
-                    $getExtension = end($lastSchema);
-                    
-                    file_put_content($model->getUploadDir().$photoName,file_get_contents($model->fotoTemp));
-                    $model->foto = $photoName;
+
+                    $model->foto = UploadedFile::getInstance($model,'foto');
+
+                    if ($model->foto){
+                        
+                        if ($model->foto->saveAs($model->getUploadDir().$photoName)){
+                            $model->foto = $photoName;
+                        }
+                    }else{
+                        $getPartSchemas = explode('/',$model->fotoTemp);
+                        $lastSchema = explode('.',end($getPartSchemas));
+                        $getExtension = end($lastSchema);
+                        
+                        file_put_contents($model->getUploadDir().$photoName,file_get_contents($model->fotoTemp));
+                        $model->foto = $photoName;
+                    }
                 }else{
                     $model->foto = UploadedFile::getInstance($model,'foto');
 
@@ -95,13 +106,13 @@ class AnggotaController extends Controller
                 // handling insert ke tabel simpanan
                 $simpanan = new DtSimpanan();
                 $simpanan->mst_anggota_id = $model->id;
-                $simpanan->mst_jenis_id = Ref::getSimpananPokok();
+                $simpanan->mst_jenis_id = Ref::getSimpananWajib();
                 $simpanan->status_trx = Ref::getCommit();
                 $simpanan->jumlah = $model->jumlah;
                 $simpanan->tgl_trx = Ref::now();
                 if (!$simpanan->save()){
-                    
-                    throw new Exception('Data Simpanan Gagal Disimpan');
+                   
+                    throw new Exception('Data Anggota Koperasi Gagal Disimpan');
                     
                 }
 
@@ -115,17 +126,18 @@ class AnggotaController extends Controller
                 $trx->tipe =  Ref::debit();
                 $trx->instance=$simpanan;
                 if (!$trx->save()){
-                    throw new Exception('Data Transaksi Gagal Disimpan');
+                    throw new Exception('Data Anggota Koperasi Gagal Disimpan');
                 }
 
                 $transaction->commit();
-                Yii::$app->session->setFlash('success','Anggota Koperasi Baru Berhasil Ditambahkan');
-                return $this->refresh();
+                Yii::$app->session->setFlash('success','Anggota Koperasi Berhasil Disimpan');
+                
             }catch(Exception $e){
                 $transaction->rollback();
                 Yii::$app->session->setFlash('error',$e->getMessage());
             }
             
+            return $this->refresh();
             
         }
 
@@ -178,7 +190,7 @@ class AnggotaController extends Controller
             if ($model->save()){
                 Yii::$app->session->setFlash('success','Data Anggota Koperasi Berhasil Diubah'); 
             }else{
-                Yii::$app->session->setFlash('error','Data Anggota Koperasi Gagal Berhasil Diubah'); 
+                Yii::$app->session->setFlash('error','Data Anggota Koperasi Gagal Diubah'); 
             }
 
             return $this->refresh();

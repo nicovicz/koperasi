@@ -111,6 +111,9 @@ AppAsset::register($this);
 
 <?php
 $this->registerJs("
+
+$('a').tooltip({placement:'bottom'});
+
 $(document).on('click','.collapse-menu-link',function(e){
   e.preventDefault();
   var main = $('main');

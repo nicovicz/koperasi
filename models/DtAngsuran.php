@@ -12,6 +12,7 @@ use thamtech\uuid\helpers\UuidHelper;
  * @property float $angsuran_pokok
  * @property float $angsuran_bunga
  * @property int $angsuran_ke
+ * @property float $jumlah
  * @property string $tgl_trx
  * @property int $status_trx
  * @property string $created_at
@@ -40,8 +41,8 @@ class DtAngsuran extends \yii\db\ActiveRecord
     {
         return [
             [['id'],'default','value'=>UuidHelper::uuid()],
-            [['dt_pinjaman_id', 'angsuran_pokok', 'angsuran_bunga', 'angsuran_ke',  'status_trx'], 'required'],
-            [['angsuran_pokok', 'angsuran_bunga'], 'number'],
+            [['dt_pinjaman_id', 'angsuran_pokok', 'angsuran_bunga', 'angsuran_ke',  'status_trx','jumlah'], 'required'],
+            [['angsuran_pokok', 'angsuran_bunga','jumlah'], 'number'],
             [['angsuran_ke', 'status_trx', 'created_by', 'updated_by'], 'integer'],
             [['tgl_trx', 'created_at', 'updated_at'], 'safe'],
             [['id', 'dt_pinjaman_id'], 'string', 'max' => 64],

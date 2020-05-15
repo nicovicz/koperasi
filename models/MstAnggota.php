@@ -5,7 +5,9 @@ namespace app\models;
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use app\helpers\Ref;
+
 /**
  * This is the model class for table "{{%mst_anggota}}".
  *
@@ -146,15 +148,117 @@ class MstAnggota extends \yii\db\ActiveRecord
 
     public function getAvatar()
     {
-        
+        return Url::to(['/site/preview','id'=>$this->id]);
     }
 
     public function getStatusAnggota()
     {
-        if ($this->mst_status_id == Ref::getActiveStatus()){
-            return '<span class="tag label label-primary family">Aktif</span>';
+       
+        $status = ArrayHelper::getValue($this,'mstStatus.data');
+        $array_status = json_decode($status,true);
+        if ($array_status){
+            return sprintf('<span class="%s"><i class="%s"></i> %s</span>',
+                $array_status['template'],
+                $array_status['icon'],
+                $array_status['label_anggota']);
         }
 
-        return '<span class="tag label label-danger family">Tidak Aktif</span>';
+        return null;
+    }
+
+    public function getKetBergabung()
+    {
+        $status = ArrayHelper::getValue($this,'mstStatus');
+        $array_status = json_decode($status->data,true);
+        if ($array_status){
+            if ($status['nama'] == 'Aktif'){
+                return sprintf('<small><i>Aktif Pada : %s</i></small>',
+                Yii::$app->formatter->asDate($this->created_at));
+            }else{
+                return sprintf('<small><i>Aktif Pada : %s</i> <br/> Nonaktif Pada  : %s</small>',
+                Yii::$app->formatter->asDate($this->created_at),
+                Yii::$app->formatter->asDate($this->updated_at)
+                );
+            }
+        }
+
+        return null;
+    }
+
+    public function getGenderTranslate()
+    {
+        return $this->jk=='L'?'Laki-Laki':'Perempuan';
+    }
+
+    public function getGenderIcon()
+    {
+        if ($this->jk=='L'){
+            return [
+                'icon_name'=> 'fa fa-male',
+                'icon_gender'=> 'fa fa-mars'
+            ];
+        }
+
+        return [
+            'icon_name'=> 'fa fa-female',
+            'icon_gender'=> 'fa fa-venus'
+        ];
+    }
+
+
+    public function getDisplayAnggota()
+    {
+        return sprintf('<div class="name-container">
+                        <div>
+                            <span>%s / <strong>%s</strong></span>
+                        </div>
+                        <div>
+                            <span>%s - %s</span>
+                        </div>
+                        <div style="margin-top:-2%%">
+                            <span>%s</span>
+                        </div>
+                    </div>',
+                        $this->nip,
+                        $this->nama,
+                        $this->jabatan,
+                        $this->sub_bagian,
+                        $this->bagian);
+    }
+
+    public function getDisplayAvatar()
+    {
+        return '<img class="img-circle" style="width:50px;height:50px;margin-top:20px" src="'.$this->getAvatar().'">';
+    }
+
+    public function getDetilDisplayAnggota()
+    {
+        return sprintf('<table class="table table-bordered">
+                            <tr>
+                                <td rowspan="4" width="120">
+                                    <img  class="pull-left" style="width:120px;height:120px" src="%s"></td>
+                                <td>%s</td><td>:</td><td></td>
+                                <td>%s</td><td>:</td><td></td>
+                            </tr>
+                            <tr >
+                               <td class="text-left-force" style="width:180px">%s</td>
+                               <td style="width:10px">:</td><td></td>
+                               <td>%s</td><td>:</td><td></td>
+                            </tr>
+                            <tr>
+                               <td class="text-left-force">%s</td><td>:</td><td></td>
+                            </tr>
+                            <tr>
+                               <td class="text-left-force">%s</td><td>:</td><td></td>
+                            </tr>
+                        </table>',
+                        $this->getAvatar(),
+                        $this->getAttributeLabel('nip'),
+                        $this->getAttributeLabel('sub_bagian'),
+                        $this->getAttributeLabel('nama'),
+                        $this->getAttributeLabel('bagian'),
+                        $this->getAttributeLabel('jabatan'),
+                        $this->getAttributeLabel('golongan'));
+                        
     }
 }

@@ -1,9 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use app\helpers\Ref;
-$activeStatus = Ref::getActiveStatus();
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MstAnggotaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -32,34 +34,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'contentOptions'=>['style'=>'width:55px'],
                 'value'=>function($model){
-                    return '<img class="img-circle" style="width:50px;height:50px;margin-top:20px" src="https://www.akveo.com/blur-admin/assets/img/app/profile/Kostya.png">';
+                    return $model->getDisplayAvatar();
                 }
             ],
             [
                 'format'=>'raw',
                 'value'=>function($model){
-                    return sprintf('<div class="name-container">
-                        <div>
-                            <span>%s / %s</span>
-                        </div>
-                        <div>
-                            <span>%s</span>
-                        </div>
-                        <div style="margin-top:-2.5%%">
-                            <span>%s</span>
-                        </div>
-                    </div>',
-                        $model->nip,
-                        $model->nama,
-                        $model->jabatan,
-                        $model->mstUnit->nama);
+                    return $model->getDisplayAnggota();
                 }
             ],
             [
                 'format'=>'raw',
-                'contentOptions'=>['style'=>'width:55px'],
+                'contentOptions'=>['style'=>'width:255px','class'=>'text-center'],
                 'value'=>function($model){
-                    return $model->getStatusAnggota();
+                    return $model->getStatusAnggota().'<br/>'.$model->getKetBergabung();
                 }
             ],
             
@@ -69,19 +57,20 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons'=>[
-                    'delete'=>function($url, $model, $key) use ($activeStatus){
-                        if ($model->mst_status_id == $activeStatus){
-                            $icon = 'fa fa-times-circle';
-                            $message = 'Apakah Anda Akan Menonaktifkan Anggota Ini?';
-                        }else{
-                            $icon = 'fa fa-check-circle';
-                            $message = 'Apakah Anda Akan Mengaktifkan Anggota Ini?';
+                    'delete'=>function($url, $model, $key){
+                        $status = ArrayHelper::getValue($model,'mstStatus.data');
+                        $array_status = json_decode($status,true);
+
+                        if ($array_status){
+                            $icon = $array_status['icon_confirm'];
+                            $tip =  $array_status['tooltip_anggota'];
+                            $message = $array_status['message_confirm_anggota'];
+                            return Html::a('<span class="'.$icon.'"></span>',$url,[
+                                'title'=>Yii::t('app',$tip),
+                                'aria-label'=>Yii::t('app',$tip),
+                                'data-confirm'=>$message
+                            ]);
                         }
-                        return Html::a('<span class="'.$icon.'"></span>',$url,[
-                            'title'=>Yii::t('app','Delete'),
-                            'aria-label'=>Yii::t('app','Delete'),
-                            'data-confirm'=>$message
-                        ]);
                     }
                 ]
             ],

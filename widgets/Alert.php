@@ -32,10 +32,10 @@ class Alert extends \yii\bootstrap\Widget
      */
     public $alertTypes = [
         'error'   => 'error',
-        'danger'  => 'alert-danger',
+        'danger'  => 'error',
         'success' => 'notice',
-        'info'    => 'alert-info',
-        'warning' => 'alert-warning'
+        'info'    => 'info',
+        'warning' => 'warning'
     ];
     /**
      * @var array the options for rendering the close button tag.
@@ -59,7 +59,7 @@ class Alert extends \yii\bootstrap\Widget
             }
 
             foreach ((array) $flash as $i => $message) {
-                $flashesGrowl[]= '$.growl.'.$this->alertTypes[$type].'({title:"", message: "'.$message.'" });';
+                $flashesGrowl[]= '$.growl.'.$this->alertTypes[$type].'({title:"", message: "'.urlencode($message).'" });';
                     
             }
 

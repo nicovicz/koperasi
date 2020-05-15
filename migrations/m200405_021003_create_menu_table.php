@@ -49,12 +49,12 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Anggota',
                         'route'=>'/anggota/anggota/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Anggota',
                         'route'=>'/anggota/anggota/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                 ]
             ],
@@ -66,12 +66,12 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Simpanan',
                         'route'=>'/simpanan/simpanan/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Simpanan',
                         'route'=>'/simpanan/simpanan/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                 ]
             ],
@@ -83,29 +83,12 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Pinjaman',
                         'route'=>'/pinjaman/pinjaman/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Pinjaman',
                         'route'=>'/pinjaman/pinjaman/index',
-                        'icon'=>'fa fa-arrow-right'
-                    ],
-                ]
-            ],
-            [
-                'label'=>'Angsuran',
-                'route'=>'#',
-                'icon'=>'fa fa-folder',
-                'items'=>[
-                    [
-                        'label'=>'Tambah Angsuran',
-                        'route'=>'/angsuran/angsuran/create',
-                        'icon'=>'fa fa-arrow-right'
-                    ],
-                    [
-                        'label'=>'Daftar Angsuran',
-                        'route'=>'/angsuran/angsuran/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                 ]
             ],
@@ -117,42 +100,42 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Jenis',
                         'route'=>'/master/jenis/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Jenis',
                         'route'=>'/master/jenis/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Tambah Status',
                         'route'=>'/master/status/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Status',
                         'route'=>'/master/status/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Tambah Transaksi',
                         'route'=>'/master/trx/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Transaksi',
                         'route'=>'/master/trx/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Tambah Unit',
                         'route'=>'/master/unit/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Unit',
                         'route'=>'/master/unit/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                 ]
             ],
@@ -164,42 +147,42 @@ class m200405_021003_create_menu_table extends Migration
                     [
                         'label'=>'Tambah Hak Akses',
                         'route'=>'/utilitas/role/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Hak Akses',
                         'route'=>'/utilitas/role/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Tambah Hak Izin',
                         'route'=>'/utilitas/route/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Hak Izin',
                         'route'=>'/utilitas/route/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Tambah Akun',
                         'route'=>'/utilitas/user/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Akun',
                         'route'=>'/utilitas/user/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Tambah Menu',
                         'route'=>'/utilitas/menu/create',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                     [
                         'label'=>'Daftar Menu',
                         'route'=>'/utilitas/menu/index',
-                        'icon'=>'fa fa-arrow-right'
+                        'icon'=>'fa fa-circle-thin'
                     ],
                 ]
             ]
