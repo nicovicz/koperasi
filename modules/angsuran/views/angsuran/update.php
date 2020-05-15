@@ -13,6 +13,7 @@ $this->title = '';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'message'=>$message
     ]) ?>
 
 </div>

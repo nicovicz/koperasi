@@ -3,6 +3,7 @@ namespace app\helpers;
 
 use app\models\DtSimpanan;
 use app\models\DtPinjaman;
+use app\models\DtAngsuran;
 use app\models\DtTransLog;
 use app\models\MstJenis;
 use app\models\MstTrx;
@@ -32,6 +33,15 @@ trait AuditLogTrait
                     return $model->save();
                 }
                
+            }
+
+            if ($this->instance instanceof DtAngsuran){
+
+                $model->data = serialize($this->instance->attributes);
+                $nama_trx = $trx[$this->instance->status_trx];
+                $model->pesan = 'Melakukan '.$nama_trx.' Angsuran Ke-'.$this->instance->angsuran_ke;
+                return $model->save();
+                
             }
 
           

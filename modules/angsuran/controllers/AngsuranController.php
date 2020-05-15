@@ -4,10 +4,12 @@ namespace app\modules\angsuran\controllers;
 
 use Yii;
 use app\models\DtAngsuran;
-use app\models\DtAngsuranSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Exception;
+use app\helpers\Ref;
+use app\models\DtTransaksi;
 
 /**
  * AngsuranController implements the CRUD actions for DtAngsuran model.
@@ -34,13 +36,57 @@ class AngsuranController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $message=[];
 
+        if ($model->status_trx == Ref::getCommit()){
+            $message=[
+                'status'=>'success',
+                'message'=>'Angsuran Ke-'.$model->angsuran_ke.' Sudah Lunas'
+            ];
+        }
+
+        $model->tgl_trx = Ref::now();
         if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+
+                $model->status_trx = Ref::getCommit();
+
+                if (!$model->save()){
+                    throw new Exception('Angsuran Pembayaran Gagal Disimpan');
+                }
+
+                $trx = new DtTransaksi();
+                $trx->jumlah = $model->jumlah;
+                $trx->tgl_trx = $model->tgl_trx;
+                $trx->status_trx = Ref::getCommit();
+                $trx->ref_id = $model->id;
+                $trx->tipe =  Ref::debit();
+                $trx->instance=$model;
+                if (!$trx->save()){
+                    throw new Exception('Angsuran Pembayaran Gagal Disimpan');
+                }
+                $transaction->commit();
+
+                $message=[
+                    'status'=>'success',
+                    'message'=>'Angsuran Ke-'.$model->angsuran_ke.' Sudah Lunas'
+                ];
+            }catch(Exception $e){
+                $transaction->rollback();
+                $message=[
+                    'status'=>'error',
+                    'message'=>$e->getMessage()
+                ];
+                
+            }
             
         }
 
         return $this->renderAjax('update', [
             'model' => $model,
+            'message'=>$message
         ]);
     }
 

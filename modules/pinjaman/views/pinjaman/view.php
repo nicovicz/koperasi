@@ -145,10 +145,10 @@ $pinjaman = Ref::HitungPerBulan($model);
                     <td class="text-center"><?=Ref::trxTranslate($angsuran->status_trx);?></td>
                     <td class="text-center">
                         
-                        <?php if (empty($angsuran->tgl_trx) && empty(intval($angsuran->jumlah))):?>
+                        <?php if ($angsuran->status_trx == Ref::getInit()):?>
                             <a href="<?=Url::to(['/angsuran/angsuran/update','id'=>$angsuran->id]);?>" class="bayar"><i class="fa fa-pencil" style="color:#fff"></i></a>
                         <?php endif;?>
-                        <?php if (!empty($angsuran->tgl_trx) && !empty(intval($angsuran->jumlah))):?>
+                        <?php if ($angsuran->status_trx == Ref::getCommit()):?>
                             <a href="<?=Url::to(['/angsuran/angsuran/delete','id'=>$angsuran->id]);?>" data-confirm=""><i class="fa fa-trash" style="color:#fff"></i></a>
                         <?php endif;?>
                     </td>

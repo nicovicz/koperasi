@@ -100,7 +100,7 @@ class PinjamanController extends Controller
                 // handling insert ke tabel transaksi
                 $trx = new DtTransaksi();
                 $trx->jumlah = -$model->jumlah;
-                $trx->tgl_trx = Ref::now();
+                $trx->tgl_trx = $model->tgl_trx;
                 $trx->status_trx = Ref::getCommit();
                 $trx->ref_id = $model->id;
                 $trx->tipe =  Ref::kredit();
