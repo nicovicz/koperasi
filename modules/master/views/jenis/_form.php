@@ -10,7 +10,9 @@ use app\widgets\ActiveForm;
 
 <div class="mst-jenis-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'model'=>$model
+    ]); ?>
 
    
     <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>

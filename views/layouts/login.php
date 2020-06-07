@@ -9,7 +9,6 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppLoginAsset;
-
 AppLoginAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -28,6 +27,7 @@ AppLoginAsset::register($this);
 
 <main class="auth-main">
   <div class="auth-block">
+      <?=Alert::widget();?>
       <?=$content;?>
     </div>
   </div>

@@ -72,7 +72,7 @@ AppAsset::register($this);
       </li>
     <?php else:?>
       <li class="al-sidebar-list-item">
-        <a class="al-sidebar-list-link" href="<?=$p['route']?>">
+        <a class="al-sidebar-list-link" href="<?=Url::to([$p['route']]);?>">
           <i class="<?=$p['icon'];?>"></i>
           <span><?=$p['name'];?></span>
         </a>
@@ -92,7 +92,7 @@ AppAsset::register($this);
 <div class="page-top clearfix">
     <a href="#/dashboard" class="al-logo clearfix"><span>Koperasi</a> 
     <a href="#" class="collapse-menu-link ion-navicon"></a>
-    <div class="user-profile clearfix"><div class="al-user-profile dropdown" uib-dropdown=""><a class="profile-toggle-link dropdown-toggle" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-3x"></i></a><ul class="top-dropdown-menu profile-dropdown dropdown-menu" uib-dropdown-menu=""><li><i class="dropdown-arr"></i></li><li><a href="#/profile"><i class="fa fa-user"></i>Profile</a></li><li><a href=""><i class="fa fa-cog"></i>Settings</a></li><li><a href="" class="signout"><i class="fa fa-power-off"></i>Sign out</a></li></ul></div></div>
+    <div class="user-profile clearfix"><div class="al-user-profile dropdown" uib-dropdown=""><a class="profile-toggle-link dropdown-toggle" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-3x"></i></a><ul class="top-dropdown-menu profile-dropdown dropdown-menu" uib-dropdown-menu=""><li><i class="dropdown-arr"></i></li><li><a href="#/profile"><i class="fa fa-user"></i>Profile</a></li><li><a href="" data-confirm="keluar Dari Aplikasi?" data-method="POST" class="signout"><i class="fa fa-power-off"></i>Sign out</a></li></ul></div></div>
 </div>
 
 <div class="al-main">

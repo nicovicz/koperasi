@@ -8,6 +8,9 @@ class UnitController extends Controller
 {
     use \app\helpers\CrudTrait;
 
+    protected $modelClass = '\app\models\MstUnit';
+    protected $modelSearchClass = '\app\models\MstUnitSearch';
+
     protected static $messages=[
         'SUCCESS_SAVE'=>'Data Unit Berhasil Disimpan',
         'FAIL_SAVE'=>'Data Unit Gagal Disimpan',

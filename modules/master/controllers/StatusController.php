@@ -8,6 +8,9 @@ class StatusController extends Controller
 {
     use \app\helpers\CrudTrait;
 
+    protected $modelClass = '\app\models\MstStatus';
+    protected $modelSearchClass = '\app\models\MstStatusSearch';
+
     protected static $messages=[
         'SUCCESS_SAVE'=>'Data Status Berhasil Disimpan',
         'FAIL_SAVE'=>'Data Status Gagal Disimpan',

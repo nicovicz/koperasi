@@ -129,7 +129,7 @@ $pinjaman = Ref::HitungPerBulan($model);
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($model->dtAngsurans as $index=> $angsuran):?>
+                <?php foreach($model->dtAngsuransView as $index=> $angsuran):?>
                 <?php
                     $model->tgl_trx =  strtotime('+1 month',strtotime($model->tgl_trx));
                 ?>
@@ -145,11 +145,15 @@ $pinjaman = Ref::HitungPerBulan($model);
                     <td class="text-center"><?=Ref::trxTranslate($angsuran->status_trx);?></td>
                     <td class="text-center">
                         
-                        <?php if ($angsuran->status_trx == Ref::getInit()):?>
+                        <?php if ($angsuran->isBelumBayar()):?>
                             <a href="<?=Url::to(['/angsuran/angsuran/update','id'=>$angsuran->id]);?>" class="bayar"><i class="fa fa-pencil" style="color:#fff"></i></a>
                         <?php endif;?>
-                        <?php if ($angsuran->status_trx == Ref::getCommit()):?>
-                            <a href="<?=Url::to(['/angsuran/angsuran/delete','id'=>$angsuran->id]);?>" data-confirm=""><i class="fa fa-trash" style="color:#fff"></i></a>
+                        <?php if ($angsuran->isSudahBayar()):?>
+                            <?=Html::a('<i class="fa fa-trash" style="color:#fff"></i>',Url::to(['/angsuran/angsuran/delete','id'=>$angsuran->id]),[
+                                'data-confirm'=>'Apakah Yakin Membatalkan Pembayaran Ini?',
+                                'data-method'=>'POST'
+                            ]);?>
+                           
                         <?php endif;?>
                     </td>
                 </tr>
@@ -171,7 +175,7 @@ $pinjaman = Ref::HitungPerBulan($model);
     <div class="modal-content" style="background: url(<?=Yii::getAlias('@web');?>/img/blur-bg-blurred.jpg) fixed">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Pembayaran Angsuran</h4>
+        <h4 class="modal-title" style="color:#fff">Pembayaran Angsuran</h4><hr/>
       </div>
       <div class="modal-body">
         
@@ -190,11 +194,16 @@ $this->registerJs("
         yii.confirm('Yakin Akan Melakukan Pembayaran Angsuran?',function(){
             $('.modal-body').load(url,function(){
                 $('#modal-pembayaran').modal('toggle');
+                
             });
             
         });
             
         
+    });
+
+    $('#modal-pembayaran').on('hide.bs.modal',function (e) {
+       window.location.reload();
     });
 ");?>
 

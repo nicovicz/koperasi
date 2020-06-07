@@ -74,6 +74,7 @@ class MstAnggota extends \yii\db\ActiveRecord
             [['foto'],'file','extensions'=>['jpg','jpeg','png']],
             [['nip', 'nama', 'jk', 'jabatan', 'golongan', 'bagian', 'sub_bagian',  'telp', 'email'], 'string', 'max' => 255],
             [['id'], 'unique'],
+            [['nip'], 'unique'],
             [['mst_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstStatus::className(), 'targetAttribute' => ['mst_status_id' => 'id']],
             [['mst_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => MstUnit::className(), 'targetAttribute' => ['mst_unit_id' => 'id']],
         ];

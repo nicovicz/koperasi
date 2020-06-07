@@ -18,7 +18,7 @@ $config = [
     'as access' => [
         'class' => '\hscstudio\mimin\components\AccessControl',
         'allowActions' => [
-           '*'
+           'site/login'
        ],
     ],
     'container'=>[

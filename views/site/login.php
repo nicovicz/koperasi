@@ -5,10 +5,10 @@
 /* @var $model app\models\LoginForm */
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 $this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
             
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?=Html::a('Lupa Password',Url::to(['/site/request-password-reset']),['class'=>'btn btn-primary']);?>
             
         </div>
 

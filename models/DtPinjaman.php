@@ -95,6 +95,13 @@ class DtPinjaman extends \yii\db\ActiveRecord
             ->orderBy(['angsuran_ke'=>SORT_ASC]);
     }
 
+    public function getDtAngsuransView()
+    {
+        return $this->hasMany(DtAngsuran::className(), ['dt_pinjaman_id' => 'id'])
+            ->where(['IN','dt_angsuran.status_trx',[1,2]])
+            ->orderBy(['angsuran_ke'=>SORT_ASC]);
+    }
+
     public function getJumlahAngsuranLunas()
     {
         return $this->hasMany(DtAngsuran::className(), ['dt_pinjaman_id' => 'id'])

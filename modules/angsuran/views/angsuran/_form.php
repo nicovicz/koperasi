@@ -22,6 +22,7 @@ use yii\widgets\Pjax;
         ]);?>
         
         <?php $form = ActiveForm::begin([
+            'id'=>'form-angsuran',
             'options'=>[
                 'data-pjax'=>true,
                 'class'=>'form-horizontal'
@@ -54,3 +55,11 @@ use yii\widgets\Pjax;
         <?php endif;?>
     <?php endif;?>      
 </div>
+
+<?php
+$this->registerJs("
+$(document).on('pjax:complete',function(event, data, status, xhr, options) {
+    
+    
+});
+");

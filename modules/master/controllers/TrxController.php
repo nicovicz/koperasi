@@ -8,6 +8,9 @@ class TrxController extends Controller
 {
     use \app\helpers\CrudTrait;
 
+    protected $modelClass = '\app\models\MstTrx';
+    protected $modelSearchClass = '\app\models\MstTrxSearch';
+
     protected static $messages=[
         'SUCCESS_SAVE'=>'Data Status Transaksi Berhasil Disimpan',
         'FAIL_SAVE'=>'Data Status Transaksi Gagal Disimpan',

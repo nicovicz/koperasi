@@ -31,11 +31,11 @@ class Alert extends \yii\bootstrap\Widget
      * - value: the bootstrap alert type (i.e. danger, success, info, warning)
      */
     public $alertTypes = [
-        'error'   => 'error',
-        'danger'  => 'error',
-        'success' => 'notice',
-        'info'    => 'info',
-        'warning' => 'warning'
+        'error'   => 'bg-danger',
+        'danger'  => 'bg-danger',
+        'success' => 'bg-success',
+        'info'    => 'bg-info',
+        'warning' => 'bg-warning'
     ];
     /**
      * @var array the options for rendering the close button tag.
@@ -51,21 +51,26 @@ class Alert extends \yii\bootstrap\Widget
     {
         $session = Yii::$app->session;
         $flashes = $session->getAllFlashes();
+       
         $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
-        $flashesGrowl = [];
+
         foreach ($flashes as $type => $flash) {
             if (!isset($this->alertTypes[$type])) {
                 continue;
             }
 
             foreach ((array) $flash as $i => $message) {
-                $flashesGrowl[]= '$.growl.'.$this->alertTypes[$type].'({title:"", message: "'.urlencode($message).'" });';
-                    
+                echo \yii\bootstrap\Alert::widget([
+                    'body' => $message,
+                    'closeButton' => $this->closeButton,
+                    'options' => array_merge($this->options, [
+                        'id' => $this->getId() . '-' . $type . '-' . $i,
+                        'class' => $this->alertTypes[$type] . $appendClass
+                    ]),
+                ]);
             }
 
             $session->removeFlash($type);
         }
-        
-        $this->getView()->registerJs(implode('',$flashesGrowl));
     }
 }

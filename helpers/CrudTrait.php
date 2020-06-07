@@ -36,11 +36,11 @@ trait CrudTrait
         if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()){
-                Yii::$app->session->setFlash('success',self::messages['SUCCESS_SAVE']);
+                Yii::$app->session->setFlash('success',self::$messages['SUCCESS_SAVE']);
                 return $this->redirect(['index']);
             }
             
-            Yii::$app->session->setFlash('error',self::messages['FAIL_SAVE']);
+            Yii::$app->session->setFlash('error',self::$messages['FAIL_SAVE']);
             
         }
 
@@ -56,11 +56,11 @@ trait CrudTrait
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()){
-                Yii::$app->session->setFlash('success',self::messages['SUCCESS_UPDATE']);
+                Yii::$app->session->setFlash('success',self::$messages['SUCCESS_UPDATE']);
                 return $this->redirect(['index']);
             }
             
-            Yii::$app->session->setFlash('error',self::messages['FAIL_UPDATE']);
+            Yii::$app->session->setFlash('error',self::$messages['FAIL_UPDATE']);
         }
 
         return $this->render('update', [
@@ -74,9 +74,9 @@ trait CrudTrait
         $model = $this->findModel($id);
 
         if ($model->delete()){
-            Yii::$app->session->setFlash('success',self::messages['SUCCESS_DELETE']);
+            Yii::$app->session->setFlash('success',self::$messages['SUCCESS_DELETE']);
         }else{
-            Yii::$app->session->setFlash('error',self::messages['FAIL_DELETE']);
+            Yii::$app->session->setFlash('error',self::$messages['FAIL_DELETE']);
         }
 
         return $this->redirect(['index']);

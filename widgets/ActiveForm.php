@@ -11,6 +11,10 @@ class ActiveForm extends BaseActiveForm
         'class'=>'form-horizontal'
     ];
 
+    public $model;
+
+    public $errorSummaryCssClass ='alert bg-danger';
+
     public $fieldConfig =[
         'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9 pull-3\">{error}</div>",
         'labelOptions' => ['class' => 'col-lg-3'],
@@ -30,10 +34,13 @@ class ActiveForm extends BaseActiveForm
             $wrapper .= '<div class="panel-heading"><h3><i class="fa fa-sticky-note"></i> '.$this->getView()->title.'</h3>
             </div>';
         }
-        
+        $errors='';
+        if ($this->model && $this->model instanceof \yii\base\Model){
+            $errors = $this->errorSummary($this->model,['encode'=>false]);
+        }
         
         $wrapper .='<div class="panel-body">';
-        $html = $wrapper.Html::beginForm($this->action, $this->method, $this->options);
+        $html = $wrapper.$errors.Html::beginForm($this->action, $this->method, $this->options);
         $html .= $content;
 
         if ($this->enableClientScript) {

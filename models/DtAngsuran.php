@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use thamtech\uuid\helpers\UuidHelper;
+use app\helpers\Ref;
 /**
  * This is the model class for table "{{%dt_angsuran}}".
  *
@@ -90,5 +91,17 @@ class DtAngsuran extends \yii\db\ActiveRecord
     public function getStatusTrx()
     {
         return $this->hasOne(MstTrx::className(), ['id' => 'status_trx']);
+    }
+
+    public function isBelumBayar()
+    {
+        return $this->status_trx == Ref::getInit() && 
+        empty(intval($this->jumlah)) && empty($this->tgl_trx);
+    }
+
+    public function isSudahBayar()
+    {
+        return $this->status_trx == Ref::getCommit() && 
+        !empty(intval($this->jumlah)) && !empty($this->tgl_trx);
     }
 }

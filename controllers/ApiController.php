@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use app\models\MstAnggota;
 use app\models\DtGroupSimpanan;
+use app\helpers\Ref;
 
 class ApiController extends Controller
 {
@@ -43,7 +44,7 @@ class ApiController extends Controller
 
         $model = MstAnggota::find()
             ->select(['id','nama text'])
-            
+            ->where(['mst_status_id'=>Ref::getActiveStatus()])
             ->limit(10)
             ->asArray()
             ->all();

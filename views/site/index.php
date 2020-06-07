@@ -1,9 +1,27 @@
 <?php
 use app\widgets\Panel;
+use app\helpers\RefDashboard;
 use miloschuman\highcharts\Highcharts;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Dashboard Koperasi';
+$anggota = RefDashboard::anggota();
+$simpanan = RefDashboard::simpanan();
+$angsuran = RefDashboard::angsuran();
+$pinjaman = RefDashboard::pinjaman();
+
+$bulan = ArrayHelper::getColumn($simpanan,'nama');
+$jumlah_simpanan = array_map(function($value){
+    return floatval($value);
+},ArrayHelper::getColumn($simpanan,'jumlah'));
+$jumlah_angsuran = array_map(function($value){
+    return floatval($value);
+},ArrayHelper::getColumn($angsuran,'jumlah'));
+$jumlah_pinjaman = array_map(function($value){
+    return floatval($value);
+},ArrayHelper::getColumn($pinjaman,'jumlah'));
+
 ?>
 <div class="site-index">
 
@@ -11,25 +29,25 @@ $this->title = 'My Yii Application';
         <div class="col-lg-3">
             <?php Panel::begin(['header'=>false]);?>       
                 <h4 class="text-center">Anggota Perhubungan Aktif</h4>
-                <h4 class="text-center">7000</h4>
+                <h4 class="text-center"><?=ArrayHelper::getValue($anggota,'phb_aktif');?></h4>
             <?php Panel::end();?>
         </div>
         <div class="col-lg-3">
             <?php Panel::begin(['header'=>false]);?>       
-                <h4 class="text-center text-danger">Anggota Perhubungan Non Aktif</h4>
-                <h4 class="text-center">7000</h4>
+                <h4 class="text-center">Anggota Perhubungan Non Aktif</h4>
+                <h4 class="text-center"><?=ArrayHelper::getValue($anggota,'phb_non_aktif');?></h4>
             <?php Panel::end();?>
         </div>
         <div class="col-lg-3">
             <?php Panel::begin(['header'=>false]);?>       
                 <h4 class="text-center ">Anggota Non Perhubungan Aktif</h4>
-                <h4 class="text-center">7000</h4>
+                <h4 class="text-center"><?=ArrayHelper::getValue($anggota,'non_phb_aktif');?></h4>
             <?php Panel::end();?>
         </div>
         <div class="col-lg-3">
             <?php Panel::begin(['header'=>false]);?>       
-                <h4 class="text-center text-danger">Anggota Non Perhubungan Non Aktif</h4>
-                <h4 class="text-center">7000</h4>
+                <h4 class="text-center">Anggota Non Perhubungan Non Aktif</h4>
+                <h4 class="text-center"><?=ArrayHelper::getValue($anggota,'non_phb_non_aktif');?></h4>
             <?php Panel::end();?>
         </div>
     </div>
@@ -39,16 +57,22 @@ $this->title = 'My Yii Application';
             <?php Panel::begin(['header'=>false]);?>       
             <?=Highcharts::widget([
             'options' => [
-                'title' => ['text' => 'Saldo Koperasi Bulan'],
+                'chart'=>[
+                    'type'=>'column'
+                ],
+                'title' => ['text' => 'Saldo Koperasi Tahun'],
                 'xAxis' => [
-                    'categories' => ['Apples', 'Bananas', 'Oranges']
+                    'categories' => $bulan
                 ],
                 'yAxis' => [
-                    'title' => ['text' => 'Fruit eaten']
+                    'min'=>0,
+                    'title' => ['text' => 'Jumlah Saldo'],
+                   
                 ],
+                
                 'series' => [
-                    ['name' => 'Jane', 'data' => [1, 0, 4]],
-                    ['name' => 'John', 'data' => [5, 7, 3]]
+                    ['name' => 'Simpanan', 'data' => $jumlah_simpanan],
+                    ['name' => 'Angsuran', 'data' => $jumlah_angsuran]
                 ]
             ]
             ]);?>
@@ -61,16 +85,26 @@ $this->title = 'My Yii Application';
             <?php Panel::begin(['header'=>false]);?>       
             <?=Highcharts::widget([
             'options' => [
-                'title' => ['text' => 'Peminjaman Koperasi Bulan'],
+                'chart'=>[
+                    'type'=>'line'
+                ],
+                'title' => ['text' => 'Peminjaman Koperasi Tahun'],
                 'xAxis' => [
-                    'categories' => ['Apples', 'Bananas', 'Oranges']
+                    'categories' => $bulan
                 ],
                 'yAxis' => [
-                    'title' => ['text' => 'Fruit eaten']
+                    'title' => ['text' => 'Jumlah Pinjaman']
+                ],
+                'plotOptions'=>[
+                    'line'=>[
+                        'dataLabels'=>[
+                            'enabled'=>true
+                        ]
+                    ]
                 ],
                 'series' => [
-                    ['name' => 'Jane', 'data' => [1, 0, 4]],
-                    ['name' => 'John', 'data' => [5, 7, 3]]
+                    ['name' => 'Pinjaman', 'data' => $jumlah_pinjaman ],
+                 
                 ]
             ]
             ]);?>

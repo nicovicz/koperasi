@@ -22,9 +22,14 @@ class AppLoginAsset extends AppAsset
       
         'css/vendor-2cae343ef1.css',
         'css/auth-a200a050c1.css',
-        'css/site.css'
+        'css/site.css',
+        'css/jquery.growl.css',
        
        
+    ];
+
+    public $js = [
+        'js/jquery.growl.js'
     ];
     
 }

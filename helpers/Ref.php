@@ -141,8 +141,8 @@ class Ref
     {
         $trx = [
            
-            1 => '<label class="badge label-success small"><i class="fa fa-check-circle"></i> Lunas</label>',
-            2 => '<label class="badge label-danger badge small"><i class="fa fa-times-circle"></i> Belum Lunas</label>'
+            2 => '<label class="badge label-success small"><i class="fa fa-check-circle"></i> Lunas</label>',
+            1 => '<label class="badge label-danger badge small"><i class="fa fa-times-circle"></i> Belum Lunas</label>'
         ];
 
         return array_key_exists($id,$trx)?$trx[$id]:
