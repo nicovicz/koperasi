@@ -20,6 +20,7 @@ use Yii;
  */
 class MstMenu extends \yii\db\ActiveRecord
 {
+    use \app\helpers\AuditTrait;
     /**
      * {@inheritdoc}
      */
@@ -28,13 +29,23 @@ class MstMenu extends \yii\db\ActiveRecord
         return '{{%mst_menu}}';
     }
 
+    public function beforeSave($insert)
+    {
+        parent::beforeSave($insert);
+        if (empty($this->parent)){
+            $this->parent = '#';
+        }
+
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['name', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['name'], 'required'],
             [['order', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'parent', 'icon', 'route'], 'string', 'max' => 255],
@@ -53,11 +64,22 @@ class MstMenu extends \yii\db\ActiveRecord
             'order' => Yii::t('app', 'Order'),
             'icon' => Yii::t('app', 'Icon'),
             'route' => Yii::t('app', 'Route'),
-            'created_at' => Yii::t('app', 'Created At'),
+            'created_at' => Yii::t('app', 'Dibuat Pada'),
             'created_by' => Yii::t('app', 'Created By'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'updated_at' => Yii::t('app', 'Diubah Pada'),
             'updated_by' => Yii::t('app', 'Updated By'),
         ];
+    }
+
+    public function getLabelIcon()
+    {
+        return sprintf('<i class="%s"></i>',$this->icon);
+    }
+
+    public function getParentMenu()
+    {
+        return $this->hasOne(MstMenu::class,['id'=>'parent'])
+            ->from('mst_menu menu_parent');
     }
 
    

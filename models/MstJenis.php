@@ -34,7 +34,7 @@ class MstJenis extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'nama', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['nama'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],
             [['id'], 'string', 'max' => 64],
@@ -51,9 +51,9 @@ class MstJenis extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'nama' => Yii::t('app', 'Nama'),
-            'created_at' => Yii::t('app', 'Created At'),
+            'created_at' => Yii::t('app', 'Dibuat Pada'),
             'created_by' => Yii::t('app', 'Created By'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'updated_at' => Yii::t('app', 'Diubah Pada'),
             'updated_by' => Yii::t('app', 'Updated By'),
         ];
     }

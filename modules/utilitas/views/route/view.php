@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php Panel::begin([
     'icon'=>'info-circle',
-    'title'=>'Detil Permission'
+    'title'=>'Detil Izin'
 ]);?>
 
 
@@ -30,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'alias',
             'type',
-            'status',
+            ['attribute'=>'status','format'=>'raw','value'=>function($model){
+                return $model->status==1?"<span class='label label-primary'>On</span>":"<span class='label label-danger'>Off</span>";
+            }],
         ],
     ]) ?>
 

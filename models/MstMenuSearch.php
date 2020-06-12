@@ -41,11 +41,12 @@ class MstMenuSearch extends MstMenu
     public function search($params)
     {
         $query = MstMenu::find();
-
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['order'=>SORT_ASC,'parent'=>SORT_ASC]]
         ]);
 
         $this->load($params);

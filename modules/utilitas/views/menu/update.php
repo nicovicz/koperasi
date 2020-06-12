@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['view', 'id
 ?>
 <div class="mst-menu-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+  
 
     <?= $this->render('_form', [
         'model' => $model,

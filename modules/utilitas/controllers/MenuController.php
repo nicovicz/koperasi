@@ -14,101 +14,17 @@ use yii\web\NotFoundHttpException;
  */
 class MenuController extends Controller
 {
-    use \app\helpers\AuthGuardTrait;
+    use \app\helpers\CrudTrait;
 
-    /**
-     * Lists all MstMenu models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new MstMenuSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    protected $modelClass = '\app\models\MstMenu';
+    protected $modelSearchClass = '\app\models\MstMenuSearch';
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single MstMenu model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new MstMenu model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new MstMenu();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing MstMenu model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing MstMenu model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the MstMenu model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return MstMenu the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = MstMenu::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-    }
+    protected static $messages=[
+        'SUCCESS_SAVE'=>'Data Menu Berhasil Disimpan',
+        'FAIL_SAVE'=>'Data Menu Gagal Disimpan',
+        'SUCCESS_UPDATE'=>'Data Menu Berhasil Diubah',
+        'FAIL_UPDATE'=>'Data Menu Gagal Diubah',
+        'SUCCESS_DELETE'=>'Data Menu Berhasil Dihapus',
+        'FAIL_DELETE'=>'Data Menu Gagal Dihapus'
+    ];
 }

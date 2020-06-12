@@ -26,7 +26,7 @@ class UserController extends Controller
 	{
 		$searchModel = new UserSearch();
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+		$dataProvider->getSort()->defaultOrder = ['status'=>SORT_DESC];
 		return $this->render('index', [
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
@@ -61,7 +61,7 @@ class UserController extends Controller
 			AuthAssignment::deleteAll(['user_id' => $model->id]);
 			if (is_array($authAssignment->item_name)) {
 				foreach ($authAssignment->item_name as $item) {
-					if (!in_array($item, $authAssignments)) {
+					
 						$authAssignment2 = new AuthAssignment([
 							'user_id' => $model->id,
 						]);
@@ -69,12 +69,15 @@ class UserController extends Controller
 						$authAssignment2->created_at = time();
 						$authAssignment2->save();
 
-						$authAssignments = AuthAssignment::find()->where([
-							'user_id' => $model->id,
-						])->column();
-					}
+				
+					
 				}
+
+				$authAssignments = AuthAssignment::find()->where([
+					'user_id' => $model->id,
+				])->column();
 			}
+			
 			Yii::$app->session->setFlash('success', 'Data tersimpan');
 		}
 		$authAssignment->item_name = $authAssignments;
@@ -98,9 +101,9 @@ class UserController extends Controller
 			$model->setPassword('123456');
 			$model->status = $model->status==1?10:0;
 			if ($model->save()) {
-				Yii::$app->session->setFlash('success', 'User berhasil dibuat dengan password 123456');
+				Yii::$app->session->setFlash('success', 'User Berhasil Dibuat Dengan Password 123456');
 			} else {
-				Yii::$app->session->setFlash('error', 'User gagal dibuat');
+				Yii::$app->session->setFlash('error', 'User Gagal Dibuat');
 			}
 
 			return $this->redirect(['view', 'id' => $model->id]);
@@ -127,9 +130,9 @@ class UserController extends Controller
 			}
 			$model->status = $model->status==1?10:0;
 			if ($model->save()) {
-			    Yii::$app->session->setFlash('success', 'User berhasil diupdate');
+			    Yii::$app->session->setFlash('success', 'User Berhasil Diupdate');
 			} else {
-			    Yii::$app->session->setFlash('error', 'User gagal diupdate');
+			    Yii::$app->session->setFlash('error', 'User Gagal Diupdate');
 			}
 			return $this->redirect(['view', 'id' => $model->id]);
 		} else {
@@ -149,16 +152,20 @@ class UserController extends Controller
 	public function actionDelete($id)
 	{
 		$model = $this->findModel($id);
-		$authAssignments = AuthAssignment::find()->where([
-			'user_id' => $model->id,
-		])->all();
-		foreach ($authAssignments as $authAssignment) {
-			$authAssignment->delete();
+		$model->status = 0;
+		
+		if ($model->id == Yii::$app->user->id){
+			Yii::$app->session->setFlash('error', 'Tidak Dapat Menghapus Akun Yang Sedang Login');
+
+		}else{
+			if ($model->save()){
+				Yii::$app->session->setFlash('success', 'Akun Berhasil Dihapus');
+			}else{
+				Yii::$app->session->setFlash('error', 'Akun Gagal Dihapus');
+			}
+		
 		}
-
-		Yii::$app->session->setFlash('success', 'Delete success');
-		$model->delete();
-
+		
 		return $this->redirect(['index']);
 	}
 

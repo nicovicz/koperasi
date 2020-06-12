@@ -32,10 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'order',
             'icon',
             'route',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
+            'created_at:datetime',
+          
+            'updated_at:datetime',
+           
         ],
     ]) ?>
 <?php Panel::end();?>

@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					foreach ($data->roles as $role) {
 						$roles[] = $role->item_name;
 					}
-					return Html::a(implode(', ', $roles), ['view', 'id' => $data->id]);
+					return implode(', ', $roles);
 				}
 			],
 			[
@@ -53,14 +53,16 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'created_at',
-				'format' => ['date', 'php:d M Y H:i:s'],
+				'label'=>'Dibuat Pada',
+				'format' => ['date', 'php:d M Y H:i'],
 				'options' => [
 					'width' => '120px',
 				],
 			],
 			[
 				'attribute' => 'updated_at',
-				'format' => ['date', 'php:d M Y H:i:s'],
+				'label'=>'Diubah Pada',
+				'format' => ['date', 'php:d M Y H:i'],
 				'options' => [
 					'width' => '120px',
 				],

@@ -21,13 +21,16 @@ use kartik\widgets\SwitchInput;
 	<?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
 	<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
+	
+	
 	<?= $form->field($model, 'status')->widget(SwitchInput::classname(), [
 		'pluginOptions' => [
 			'onText' => 'Active',
 			'offText' => 'Banned',
 		]
 	]) ?>
+
+		<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
 	<?php if (!$model->isNewRecord) { ?>
 		<fieldset> 

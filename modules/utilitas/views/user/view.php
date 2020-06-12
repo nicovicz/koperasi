@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+          
             'username',
           
             'email:email',
             'status',
-            'created_at:datetime',
-            'updated_at:datetime',
+            ['attribute'=>'created_at','format'=>'datetime','label'=>'Dibuat Pada'],
+            ['attribute'=>'updated_at','format'=>'datetime', 'label'=>'Diubah Pada'],
         ],
     ]) ?>
     <hr/>
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
     echo $form->field($authAssignment, 'item_name')->widget(Select2::classname(), [
       'data' => $authItems,
       'options' => [
-        'placeholder' => 'Select role ...',
+        'placeholder' => 'Pilih Hak Akses',
       ],
       'pluginOptions' => [
         'allowClear' => true,
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form-group">
         <?= Html::submitButton('<i class="fa fa-save"></i> Update', [
             'class' => $authAssignment->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-            //'data-confirm'=>"Apakah anda yakin akan menyimpan data ini?",
+            'data-confirm'=>"Apakah anda yakin akan menyimpan data ini?",
         ]) ?>
     </div>
     <?php ActiveForm::end(); ?>
