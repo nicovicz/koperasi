@@ -32,7 +32,7 @@ class m200311_043139_create_angsuran_table extends Migration
             'updated_by' => $this->integer()->notNull(),
             'PRIMARY KEY(id)'
         ],$tableOptions);
-
+        if ($this->db->driverName === 'mysql') {
         $this->addForeignKey(
             'fk-angsuran-pinjaman',
             'dt_angsuran',
@@ -50,6 +50,7 @@ class m200311_043139_create_angsuran_table extends Migration
             'id',
             'NO ACTION'
         );
+    }
     }
 
     /**

@@ -40,7 +40,7 @@ class m200311_042919_create_jenis_table extends Migration
             'updated_by' => $this->integer()->notNull(),
             'PRIMARY KEY(id)'
         ],$tableOptions);
-
+        if ($this->db->driverName === 'mysql') {
         $this->addForeignKey(
             'fk-group-jenis',
             'dt_group_simpanan',
@@ -58,6 +58,7 @@ class m200311_042919_create_jenis_table extends Migration
             'id',
             'NO ACTION'
         );
+    }
         
         $pokok = UuidHelper::uuid();
         $this->insert('{{%mst_jenis}}',[

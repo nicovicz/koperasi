@@ -34,7 +34,7 @@ class m200311_043123_create_pinjaman_table extends Migration
             'updated_by' => $this->integer()->notNull(),
             'PRIMARY KEY(id)'
         ],$tableOptions);
-
+        if ($this->db->driverName === 'mysql') {
         $this->addForeignKey(
             'fk-pinjaman-anggota',
             'dt_pinjaman',
@@ -70,6 +70,7 @@ class m200311_043123_create_pinjaman_table extends Migration
             'id',
             'NO ACTION'
         );
+    }
     }
 
     /**

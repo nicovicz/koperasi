@@ -16,19 +16,36 @@ class RouteGenerator
 	{
 		$routes = $this->searchRoute('all');
 		foreach ($routes as $route => $status) {
-			if (!Route::findOne($route)) {
-				$model = new Route();
-				$model->name = $route;
-				$pos = (strrpos($route, '/'));
-				$model->type = substr($route, 1, $pos - 1);
-				$model->alias = substr($route, $pos + 1, 64);
-                $model->save();
-                if ($model->alias != '*'){
-                    $permission = $authManager->createPermission($model->name);
-                    $authManager->add($permission);
-                    $authManager->addChild($role, $permission);
-                }
-                
+			$transaction = Yii::$app->db->beginTransaction();
+			try {
+				
+				if (!Route::findOne($route)) {
+					$model = new Route();
+					$model->name = $route;
+					$pos = (strrpos($route, '/'));
+					$model->type = substr($route, 1, $pos - 1);
+					$model->alias = substr($route, $pos + 1, 64);
+					$model->save();
+					
+					if ($model->alias != '*'){
+						$permission = $authManager->createPermission($model->name);
+						$authManager->add($permission);
+						$authManager->addChild($role, $permission);
+					}
+					
+					
+				}
+				$transaction->commit();
+			}catch(\Exception $e) {
+				if(stripos($e->getMessage(), 'DATABASE IS LOCKED') !== false) {
+					// This should be specific to SQLite, sleep for 0.25 seconds
+					// and try again.  We do have to commit the open transaction first though
+					$transaction->commit();
+					usleep(250000);
+				} else {
+					$transaction->rollBack();
+					throw $e;
+				}
 			}
 		}
 	

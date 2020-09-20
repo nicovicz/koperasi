@@ -31,7 +31,7 @@ class m200311_065929_create_simpanan_table extends Migration
             'updated_by' => $this->integer()->notNull(),
             'PRIMARY KEY (id)'
         ],$tableOptions);
-
+        if ($this->db->driverName === 'mysql') {
         $this->addForeignKey(
             'fk-simpanan-anggota',
             'dt_simpanan',
@@ -58,6 +58,7 @@ class m200311_065929_create_simpanan_table extends Migration
             'id',
             'NO ACTION'
         );
+    }
 
         
     }

@@ -39,7 +39,7 @@ class m200311_042858_create_anggota_table extends Migration
             'updated_by' => $this->integer()->notNull(),
             'PRIMARY KEY(id)'
         ],$tableOptions);
-
+        if ($this->db->driverName === 'mysql') {
         $this->addForeignKey(
             'fk-anggota-status',
             'mst_anggota',
@@ -57,6 +57,7 @@ class m200311_042858_create_anggota_table extends Migration
             'id',
             'NO ACTION'
         );
+        }
     }
 
     /**
